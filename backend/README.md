@@ -25,8 +25,9 @@ uvicorn app.main:app --reload
 - `GET /health` → `{"status": "ok"}`
 - `GET /api/products` → JSON array of products
 
-## Deployment (Railway)
+## Deployment (Render)
 
-Railway runs `web: uvicorn app.main:app --host 0.0.0.0 --port $PORT` (see `Procfile`).
-Set `DATABASE_URL` and `FRONTEND_ORIGIN` as environment variables in the
-Railway dashboard — never commit them.
+Render runs `uvicorn app.main:app --host 0.0.0.0 --port $PORT` as the start
+command (build command: `pip install -r requirements.txt`). Set
+`DATABASE_URL` and `FRONTEND_ORIGIN` as environment variables in the Render
+dashboard — never commit them.

@@ -18,5 +18,5 @@ and lists each product's name and price.
 ## Deployment (Vercel)
 
 Set the `NEXT_PUBLIC_API_URL` environment variable in the Vercel dashboard to
-the deployed Railway backend URL. It's inlined into the client bundle at
+the deployed Render backend URL. It's inlined into the client bundle at
 build time (that's expected — it's a public URL, not a secret).

@@ -9,7 +9,7 @@ real storefront features (cart, checkout, payments, auth) exist yet.
 ## Stack
 
 - **Frontend**: Next.js (App Router) + TypeScript + Tailwind, deployed to Vercel
-- **Backend**: FastAPI (Python), deployed to Railway
+- **Backend**: FastAPI (Python), deployed to Render
 - **Database**: PostgreSQL on Neon
 
 ## Repo layout
