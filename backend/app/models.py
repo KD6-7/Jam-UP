@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import uuid
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy import Boolean, ForeignKey, Integer, Text, TIMESTAMP, func
 from sqlalchemy.dialects.postgresql import UUID
@@ -17,7 +20,7 @@ class Product(Base):
     description: Mapped[str] = mapped_column(Text, nullable=False)
     price_paise: Mapped[int] = mapped_column(Integer, nullable=False)
     weight_grams: Mapped[int] = mapped_column(Integer, nullable=False)
-    image_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    image_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     in_stock: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.now())
 
@@ -32,8 +35,8 @@ class Order(Base):
     customer_email: Mapped[str] = mapped_column(Text, nullable=False)
     customer_phone: Mapped[str] = mapped_column(Text, nullable=False)
     shipping_address: Mapped[str] = mapped_column(Text, nullable=False)
-    razorpay_order_id: Mapped[str | None] = mapped_column(Text, nullable=True)
-    razorpay_payment_id: Mapped[str | None] = mapped_column(Text, nullable=True)
+    razorpay_order_id: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    razorpay_payment_id: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.now())
 
     items: Mapped[list["OrderItem"]] = relationship(back_populates="order")
