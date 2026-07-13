@@ -3,7 +3,22 @@
 import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/ProductCard";
-import { fetchProducts, type Product } from "@/lib/api";
+import { categoryOf, fetchProducts, type Category, type Product } from "@/lib/api";
+
+const CATEGORIES: { name: Category; blurb: string }[] = [
+  {
+    name: "Fusion Jam",
+    blurb: "Bold pairings like mango-chilli and guava-chilli — uniquely Indian in soul.",
+  },
+  {
+    name: "Chia Jam",
+    blurb: "Classic fruit jams fortified with superfood chia seeds.",
+  },
+  {
+    name: "Jam Slices",
+    blurb: "Individually wrapped squares — peel, place, eat. A mess-free jam sandwich.",
+  },
+];
 
 const VALUES = [
   { icon: "🍓", title: "Real fruit pulp", text: "Every jar starts with actual fruit, not flavouring." },
@@ -83,13 +98,27 @@ export default function Home() {
           </p>
         )}
 
-        {products && (
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        )}
+        {products &&
+          CATEGORIES.map((cat) => {
+            const items = products.filter((p) => categoryOf(p) === cat.name);
+            if (items.length === 0) return null;
+            return (
+              <div key={cat.name} className="mt-12">
+                <div className="flex items-baseline gap-3 border-b-2 border-marigold/40 pb-2">
+                  <h3 className="font-display text-2xl font-bold">
+                    {cat.name === "Jam Slices" ? cat.name : `${cat.name}s`}
+                  </h3>
+                  <p className="hidden text-sm text-maroon/60 sm:block">{cat.blurb}</p>
+                </div>
+                <p className="mt-2 text-sm text-maroon/60 sm:hidden">{cat.blurb}</p>
+                <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {items.map((p) => (
+                    <ProductCard key={p.id} product={p} />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
       </section>
 
       {/* Jam Slices callout */}
