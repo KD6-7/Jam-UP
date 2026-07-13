@@ -21,9 +21,13 @@ export default function ProductPage() {
       .catch((err) => setError(err instanceof Error ? err.message : "Unknown error"));
   }, [slug]);
 
+  const backAnchor = product
+    ? { "Fusion Jam": "fusion", "Chia Jam": "chia", "Jam Slices": "slices" }[categoryOf(product)]
+    : "fusion";
+
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
-      <Link href="/#products" className="text-sm font-medium text-jamred hover:underline">
+      <Link href={`/#${backAnchor}`} className="text-sm font-medium text-jamred hover:underline">
         ← Back to all jams
       </Link>
 

@@ -4,27 +4,49 @@ import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/ProductCard";
 import { categoryOf, fetchProducts, type Category, type Product } from "@/lib/api";
-
-const CATEGORIES: { name: Category; blurb: string }[] = [
-  {
-    name: "Fusion Jam",
-    blurb: "Bold pairings like mango-chilli and guava-chilli — uniquely Indian in soul.",
-  },
-  {
-    name: "Chia Jam",
-    blurb: "Classic fruit jams fortified with superfood chia seeds.",
-  },
-  {
-    name: "Jam Slices",
-    blurb: "Individually wrapped squares — peel, place, eat. A mess-free jam sandwich.",
-  },
-];
+import { CARD_META } from "@/lib/catalogMeta";
 
 const VALUES = [
-  { icon: "🍓", title: "Real fruit pulp", text: "Every jar starts with actual fruit, not flavouring." },
-  { icon: "🌱", title: "Fortified with chia", text: "Superfood chia seeds for everyday wellness." },
-  { icon: "🍯", title: "Sulphur-less sugar", text: "Sweetened the cleaner, unbleached way." },
-  { icon: "🚫", title: "Zero additives", text: "No artificial colours, flavours or preservatives." },
+  "Real fruit pulp",
+  "Fortified with chia",
+  "Sulphur-less sugar",
+  "Zero additives",
+];
+
+const SECTIONS: {
+  category: Category;
+  anchor: string;
+  kicker: string;
+  heading: string;
+  blurb: string;
+  headerClass: string;
+}[] = [
+  {
+    category: "Fusion Jam",
+    anchor: "fusion",
+    kicker: "Bold & spicy",
+    heading: "Fusion Jams",
+    blurb:
+      "Mango-chilli, guava-chilli and other pairings that shouldn't work — but absolutely do.",
+    headerClass: "bg-jamred text-cream",
+  },
+  {
+    category: "Chia Jam",
+    anchor: "chia",
+    kicker: "Everyday wellness",
+    heading: "Chia Jams",
+    blurb: "Classic fruit jams fortified with superfood chia seeds. Breakfast, upgraded.",
+    headerClass: "bg-marigold text-maroon-dark",
+  },
+  {
+    category: "Jam Slices",
+    anchor: "slices",
+    kicker: "Peel · Place · Eat",
+    heading: "Jam Slices",
+    blurb:
+      "Individually wrapped squares that fit right between two slices of bread. Mess-free, tiffin-ready.",
+    headerClass: "bg-maroon text-cream",
+  },
 ];
 
 export default function Home() {
@@ -39,99 +61,108 @@ export default function Home() {
 
   return (
     <main>
-      {/* Hero */}
+      {/* Slim brand banner */}
       <section className="bg-maroon text-cream">
-        <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-4 py-16 text-center md:py-24">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-10 px-6 py-9">
+          <div className="flex max-w-2xl flex-col gap-2.5">
+            <h1 className="font-display text-4xl font-black leading-[1.08]">
+              Wellness in a jar.
+              <br />
+              <span className="text-marigold">Mischief on your toast.</span>
+            </h1>
+            <p className="text-[15px] leading-relaxed text-cream/85">
+              Fusion jams with real fruit pulp, chia-fortified classics and
+              mess-free jam slices — uniquely Indian in soul.
+            </p>
+          </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.jpg"
             alt="Jam Up — where every bite is a delight"
-            className="h-40 w-40 rounded-full shadow-lg md:h-52 md:w-52"
+            className="hidden h-32 w-32 shrink-0 rotate-6 rounded-full shadow-lg md:block"
           />
-          <h1 className="font-display text-4xl font-bold leading-tight md:text-5xl">
-            Wellness in a Jar
-          </h1>
-          <p className="max-w-2xl text-cream/85 md:text-lg">
-            Premium fusion jams crafted with real fruit pulp, fortified with
-            chia seeds, sweetened with sulphur-less sugar — and absolutely zero
-            artificial additives. Uniquely Indian in soul, globally appealing
-            in execution.
-          </p>
-          <a
-            href="#products"
-            className="rounded-full bg-marigold px-8 py-3 font-semibold text-maroon-dark transition hover:bg-jamred hover:text-cream"
-          >
-            Explore our jams
-          </a>
         </div>
       </section>
 
-      {/* Value strip */}
-      <section className="mx-auto max-w-5xl px-4 py-12">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {VALUES.map((v) => (
-            <div key={v.title} className="text-center">
-              <div className="text-3xl">{v.icon}</div>
-              <h2 className="mt-2 font-display font-semibold">{v.title}</h2>
-              <p className="mt-1 text-sm text-maroon/70">{v.text}</p>
-            </div>
+      {/* Value pills strip */}
+      <section className="bg-marigold text-maroon-dark">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-7 gap-y-2 px-6 py-2.5 text-[13px] font-bold">
+          {VALUES.map((title) => (
+            <span key={title} className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-maroon-dark" />
+              {title}
+            </span>
           ))}
         </div>
       </section>
 
-      {/* Products */}
-      <section id="products" className="mx-auto max-w-5xl scroll-mt-8 px-4 py-8">
-        <h2 className="font-display text-3xl font-bold">Our Jams</h2>
-        <p className="mt-1 text-maroon/70">
-          Fusion jars, chia-fortified classics and mess-free jam slices.
-        </p>
-
+      {/* Product sections */}
+      <div className="mx-auto flex max-w-6xl flex-col gap-14 px-6 pb-2 pt-10">
         {error && (
-          <p className="mt-8 rounded-lg bg-jamred/10 p-4 text-jamred">
+          <p className="rounded-lg bg-jamred/10 p-4 text-jamred">
             Failed to load products: {error}
           </p>
         )}
         {!error && products === null && (
-          <p className="mt-8 animate-pulse text-maroon/70">
+          <p className="animate-pulse text-maroon/70">
             Waking up the jam kitchen… this can take up to a minute on the
             first visit.
           </p>
         )}
 
         {products &&
-          CATEGORIES.map((cat) => {
-            const items = products.filter((p) => categoryOf(p) === cat.name);
+          SECTIONS.map((section) => {
+            const items = products.filter((p) => categoryOf(p) === section.category);
             if (items.length === 0) return null;
             return (
-              <div key={cat.name} className="mt-12">
-                <div className="flex items-baseline gap-3 border-b-2 border-marigold/40 pb-2">
-                  <h3 className="font-display text-2xl font-bold">
-                    {cat.name === "Jam Slices" ? cat.name : `${cat.name}s`}
-                  </h3>
-                  <p className="hidden text-sm text-maroon/60 sm:block">{cat.blurb}</p>
+              <section
+                key={section.anchor}
+                id={section.anchor}
+                className="[scroll-margin-top:88px]"
+              >
+                <div
+                  className={`flex items-center justify-between gap-6 rounded-[20px] px-8 py-7 ${section.headerClass}`}
+                >
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-xs font-bold uppercase tracking-[0.14em] opacity-85">
+                      {section.kicker}
+                    </span>
+                    <h2 className="font-display text-[34px] font-black leading-[1.05]">
+                      {section.heading}
+                    </h2>
+                    <p className="mt-0.5 max-w-xl text-sm leading-normal opacity-90">
+                      {section.blurb}
+                    </p>
+                  </div>
                 </div>
-                <p className="mt-2 text-sm text-maroon/60 sm:hidden">{cat.blurb}</p>
-                <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+                <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((p) => (
-                    <ProductCard key={p.id} product={p} />
+                    <ProductCard key={p.id} product={p} meta={CARD_META[p.slug]} />
                   ))}
                 </div>
-              </div>
+              </section>
             );
           })}
-      </section>
+      </div>
 
-      {/* Jam Slices callout */}
-      <section className="mx-auto max-w-5xl px-4 py-12">
-        <div className="rounded-3xl bg-marigold/15 p-8 text-center md:p-12">
-          <h2 className="font-display text-3xl font-bold">
-            Peel · Place · Eat
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-maroon/80">
-            Our first-of-its-kind Jam Slices are individually wrapped squares
-            that fit right between two slices of bread — a mess-free jam
-            sandwich for school tiffins, travel and on-the-go snacking.
-          </p>
+      {/* Peel Place Eat ribbon */}
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <div className="flex flex-wrap items-center justify-between gap-6 rounded-[20px] border-2 border-dashed border-maroon/35 px-8 py-7">
+          <div>
+            <h2 className="font-display text-[26px] font-black">Peel · Place · Eat</h2>
+            <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-maroon/75">
+              First-of-their-kind Jam Slices: individually wrapped squares that
+              fit right between two slices of bread. School tiffins, travel,
+              zero mess.
+            </p>
+          </div>
+          <a
+            href="#slices"
+            className="shrink-0 rounded-full bg-jamred px-6 py-2.5 text-sm font-bold text-cream transition hover:bg-maroon"
+          >
+            Try the slices
+          </a>
         </div>
       </section>
     </main>
