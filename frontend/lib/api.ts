@@ -39,3 +39,69 @@ export async function fetchProduct(slug: string): Promise<Product | null> {
   if (!res.ok) throw new Error(`API returned ${res.status}`);
   return res.json();
 }
+
+export interface UserInfo {
+  id: string;
+  email: string;
+  name: string | null;
+  picture_url: string | null;
+}
+
+export interface CartEntry {
+  product: Product;
+  quantity: number;
+}
+
+export interface CartData {
+  items: CartEntry[];
+  subtotal_paise: number;
+}
+
+async function authedFetch(
+  path: string,
+  token: string,
+  init?: { method?: string; body?: string }
+) {
+  const headers: Record<string, string> = { Authorization: `Bearer ${token}` };
+  if (init?.body) headers["Content-Type"] = "application/json";
+  const res = await fetch(`${apiBase()}${path}`, { ...init, headers });
+  if (!res.ok) throw new Error(`API returned ${res.status}`);
+  return res.json();
+}
+
+export async function authGoogle(
+  credential: string
+): Promise<{ token: string; user: UserInfo }> {
+  const res = await fetch(`${apiBase()}/api/auth/google`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ credential }),
+  });
+  if (!res.ok) throw new Error(`Sign-in failed (${res.status})`);
+  return res.json();
+}
+
+export function fetchCart(token: string): Promise<CartData> {
+  return authedFetch("/api/cart", token);
+}
+
+export function setCartItemApi(
+  token: string,
+  productId: string,
+  quantity: number
+): Promise<CartData> {
+  return authedFetch("/api/cart/items", token, {
+    method: "PUT",
+    body: JSON.stringify({ product_id: productId, quantity }),
+  });
+}
+
+export function mergeCartApi(
+  token: string,
+  items: { product_id: string; quantity: number }[]
+): Promise<CartData> {
+  return authedFetch("/api/cart/merge", token, {
+    method: "POST",
+    body: JSON.stringify({ items }),
+  });
+}

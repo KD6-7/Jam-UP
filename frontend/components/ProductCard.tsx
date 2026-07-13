@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 import { formatPaise, type Product } from "@/lib/api";
+import { useCart } from "@/lib/cart";
 
 export interface CardMeta {
   tagline: string;
@@ -15,6 +19,16 @@ export default function ProductCard({
   product: Product;
   meta?: CardMeta;
 }) {
+  const { add } = useCart();
+  const [justAdded, setJustAdded] = useState(false);
+
+  const handleAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    add(product);
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 1200);
+  };
+
   return (
     <Link
       href={`/products/${product.slug}`}
@@ -53,9 +67,16 @@ export default function ProductCard({
             </span>
             <span className="text-xs text-maroon/55">{product.weight_grams}g</span>
           </span>
-          <span className="rounded-full bg-marigold px-4 py-2 text-[13px] font-bold text-maroon-dark transition group-hover:bg-jamred group-hover:text-cream">
-            Add +
-          </span>
+          <button
+            onClick={handleAdd}
+            className={`rounded-full px-4 py-2 text-[13px] font-bold transition ${
+              justAdded
+                ? "bg-maroon text-cream"
+                : "bg-marigold text-maroon-dark hover:bg-jamred hover:text-cream"
+            }`}
+          >
+            {justAdded ? "Added ✓" : "Add +"}
+          </button>
         </div>
       </div>
     </Link>

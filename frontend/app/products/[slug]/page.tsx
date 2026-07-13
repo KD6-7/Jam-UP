@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { categoryOf, fetchProduct, formatPaise, type Product } from "@/lib/api";
+import { useCart } from "@/lib/cart";
 
 export default function ProductPage() {
   const params = useParams<{ slug: string }>();
@@ -13,6 +14,15 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { add } = useCart();
+  const [justAdded, setJustAdded] = useState(false);
+
+  const handleAdd = () => {
+    if (!product) return;
+    add(product);
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 1200);
+  };
 
   useEffect(() => {
     if (!slug) return;
@@ -81,6 +91,16 @@ export default function ProductPage() {
             <p className="mt-4 text-2xl font-bold">
               {formatPaise(product.price_paise)}
             </p>
+            <button
+              onClick={handleAdd}
+              className={`mt-5 w-fit rounded-full px-8 py-3 font-bold transition ${
+                justAdded
+                  ? "bg-maroon text-cream"
+                  : "bg-marigold text-maroon-dark hover:bg-jamred hover:text-cream"
+              }`}
+            >
+              {justAdded ? "Added to cart ✓" : "Add to cart"}
+            </button>
             <p className="mt-6 leading-relaxed text-maroon/85">
               {product.description}
             </p>
