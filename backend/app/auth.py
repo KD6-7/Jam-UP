@@ -46,6 +46,20 @@ def issue_session_token(user: User) -> str:
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 
+def get_optional_user(
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    db: Session = Depends(get_db),
+):
+    """Like get_current_user, but anonymous callers get None instead of 401."""
+    if credentials is None or not JWT_SECRET:
+        return None
+    try:
+        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return db.get(User, uuid.UUID(payload["sub"]))
+    except (jwt.InvalidTokenError, KeyError, ValueError):
+        return None
+
+
 def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
     db: Session = Depends(get_db),
