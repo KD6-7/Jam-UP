@@ -54,6 +54,7 @@ interface CartState {
   syncError: string | null;
   add: (product: Product) => void;
   setQuantity: (product: Product, quantity: number) => void;
+  clear: () => void;
 }
 
 const CartContext = createContext<CartState | null>(null);
@@ -130,6 +131,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [items, setQuantity]
   );
 
+  // After successful payment: the server cart is already cleared by the
+  // verify endpoint, so this only resets local state and guest storage.
+  const clear = useCallback(() => {
+    localStorage.removeItem(LOCAL_KEY);
+    setItems([]);
+  }, []);
+
   const count = items.reduce((sum, e) => sum + e.quantity, 0);
   const subtotalPaise = items.reduce(
     (sum, e) => sum + e.product.price_paise * e.quantity,
@@ -138,7 +146,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, count, subtotalPaise, ready, syncError, add, setQuantity }}
+      value={{ items, count, subtotalPaise, ready, syncError, add, setQuantity, clear }}
     >
       {children}
     </CartContext.Provider>

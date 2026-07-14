@@ -96,6 +96,88 @@ export function setCartItemApi(
   });
 }
 
+export interface CheckoutForm {
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  shipping_address: string;
+}
+
+export interface CheckoutResponse {
+  order_id: string;
+  razorpay_order_id: string;
+  amount_paise: number;
+  currency: string;
+  key_id: string;
+  prefill: { name: string; email: string; contact: string };
+}
+
+export interface OrderItemData {
+  name: string;
+  slug: string;
+  image_url: string | null;
+  quantity: number;
+  unit_price_paise: number;
+}
+
+export interface OrderData {
+  id: string;
+  status: string;
+  total_paise: number;
+  customer_name: string;
+  shipping_address: string;
+  created_at: string | null;
+  items: OrderItemData[];
+}
+
+async function postJson(path: string, body: unknown, token: string | null) {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const res = await fetch(`${apiBase()}${path}`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    let detail = `API returned ${res.status}`;
+    try {
+      const data = await res.json();
+      if (typeof data.detail === "string") detail = data.detail;
+    } catch {
+      // non-JSON error body
+    }
+    throw new Error(detail);
+  }
+  return res.json();
+}
+
+export function checkoutApi(
+  form: CheckoutForm,
+  items: { product_id: string; quantity: number }[],
+  token: string | null
+): Promise<CheckoutResponse> {
+  return postJson("/api/checkout", { ...form, items }, token);
+}
+
+export function verifyPaymentApi(
+  payload: {
+    order_id: string;
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    razorpay_signature: string;
+  },
+  token: string | null
+): Promise<{ status: string; order_id: string }> {
+  return postJson("/api/checkout/verify", payload, token);
+}
+
+export async function fetchOrder(orderId: string): Promise<OrderData | null> {
+  const res = await fetch(`${apiBase()}/api/orders/${encodeURIComponent(orderId)}`);
+  if (res.status === 404 || res.status === 422) return null;
+  if (!res.ok) throw new Error(`API returned ${res.status}`);
+  return res.json();
+}
+
 export function mergeCartApi(
   token: string,
   items: { product_id: string; quantity: number }[]

@@ -103,9 +103,14 @@ export default function CartPage() {
             </span>
           </div>
 
-          <p className="mt-3 text-right text-sm text-maroon/60">
-            Checkout is coming soon — your cart will be waiting.
-          </p>
+          <div className="mt-5 text-right">
+            <Link
+              href="/checkout"
+              className="inline-block rounded-full bg-jamred px-8 py-3 font-bold text-cream transition hover:bg-maroon"
+            >
+              Checkout
+            </Link>
+          </div>
         </>
       )}
 
