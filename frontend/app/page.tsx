@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 import Drip from "@/components/Drip";
 import {
@@ -11,31 +8,32 @@ import {
   OrangeSliceArt,
   StrawberryArt,
 } from "@/components/FruitArt";
-import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
-import SkeletonCard from "@/components/SkeletonCard";
-import { categoryOf, fetchProducts, type Category, type Product } from "@/lib/api";
-import { CARD_META, CATEGORY_PLATES } from "@/lib/catalogMeta";
+import { CATEGORY_PLATES } from "@/lib/catalogMeta";
+
+const VALUES = [
+  { title: "Real fruit pulp", text: "Every jar starts with actual fruit, not flavouring." },
+  { title: "Fortified with chia", text: "Superfood seeds riding along on your toast." },
+  { title: "Sulphur-less sugar", text: "Sweetened the cleaner, unbleached way." },
+  { title: "Zero additives", text: "No artificial colours, flavours or preservatives." },
+];
 
 const CHAPTERS: {
-  category: Category;
-  anchor: string;
+  plateKey: string;
   kicker: string;
   heading: string;
   copy: string;
-  link: string;
+  flavors: string[];
   art: React.ReactNode;
   flip: boolean;
-  tilt: string;
 }[] = [
   {
-    category: "Fusion Jam",
-    anchor: "fusion",
-    kicker: "Bold & spicy",
+    plateKey: "Fusion Jam",
+    kicker: "The fusion jams",
     heading: "Pairings that shouldn't work — but absolutely do.",
     copy:
-      "Mango with chilli. Guava with heat. Ginger cutting through sweetness. Our fusion jams take the flavor collisions of Indian streets and bottle them with real fruit pulp and sulphur-less sugar.",
-    link: "/products#fusion",
+      "Mango with a slow chilli burn. Guava with street-cart heat. Ginger cutting through ripe sweetness. Our fusion range takes the flavor collisions of Indian streets and slow-cooks them into jars that are uniquely Indian in soul, globally appealing on toast.",
+    flavors: ["Mango Chilli", "Mango Ginger", "Guava Chilli"],
     art: (
       <>
         <MangoArt className="h-28 w-28 animate-float [--float-tilt:-8deg]" />
@@ -43,16 +41,14 @@ const CHAPTERS: {
       </>
     ),
     flip: false,
-    tilt: "-rotate-2",
   },
   {
-    category: "Chia Jam",
-    anchor: "chia",
-    kicker: "Everyday wellness",
+    plateKey: "Chia Jam",
+    kicker: "The chia jams",
     heading: "Breakfast classics, quietly fortified.",
     copy:
-      "Apple-cinnamon, fig, mango — the flavors your mornings already love, folded through with chia seeds. Fibre, protein and omega-3s hitch a ride on your toast without changing how it tastes.",
-    link: "/products#chia",
+      "Apple-cinnamon, fig, mango — the flavors your mornings already love, folded through with chia seeds. Fibre, protein and omega-3s arrive uninvited and unnoticed, because wellness should taste like jam, not like homework.",
+    flavors: ["Apple Cinnamon Chia", "Fig Chia", "Mango Chia"],
     art: (
       <>
         <FigArt className="h-28 w-28 animate-float [--float-tilt:6deg]" />
@@ -60,48 +56,32 @@ const CHAPTERS: {
       </>
     ),
     flip: true,
-    tilt: "rotate-2",
   },
   {
-    category: "Jam Slices",
-    anchor: "slices",
-    kicker: "Peel · Place · Eat",
+    plateKey: "Jam Slices",
+    kicker: "The jam slices",
     heading: "The jam sandwich, solved.",
     copy:
-      "Individually wrapped squares of jam that fit sliced bread exactly. No jar, no knife, no mess — just peel, place and eat. First of their kind in India, made for tiffins and travel.",
-    link: "/products#slices",
-    art: (
-      <StrawberryArt className="h-32 w-32 animate-float [--float-tilt:-5deg]" />
-    ),
+      "Individually wrapped squares of jam that fit sliced bread exactly — peel, place, eat. No jar, no knife, no mess. First of their kind in India, built for school tiffins, train windows and anywhere bread happens.",
+    flavors: ["Strawberry", "Mango", "Mixed Fruit"],
+    art: <StrawberryArt className="h-32 w-32 animate-float [--float-tilt:-5deg]" />,
     flip: false,
-    tilt: "-rotate-1",
   },
 ];
 
 export default function Home() {
-  const [products, setProducts] = useState<Product[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchProducts()
-      .then(setProducts)
-      .catch((err) => setError(err instanceof Error ? err.message : "Unknown error"));
-  }, []);
-
   return (
     <main>
-      {/* Hero: full-bleed flavor gradient, editorial headline, no center CTA */}
+      {/* Hero — brand first, one quiet path to the store */}
       <section className="relative overflow-hidden bg-gradient-to-br from-mango via-jamred to-fig bg-[length:200%_200%] text-cream animate-gradient-drift">
         <MangoArt className="absolute right-[8%] top-12 h-24 w-24 animate-float opacity-90 [--float-tilt:-10deg] md:h-32 md:w-32" />
         <StrawberryArt className="absolute right-[28%] top-32 hidden h-20 w-20 animate-float opacity-90 [--float-tilt:8deg] [animation-delay:1.5s] md:block" />
         <ChilliArt className="absolute bottom-24 right-[14%] hidden h-24 w-24 animate-float opacity-90 [--float-tilt:14deg] [animation-delay:0.7s] md:block" />
-
-        {/* Settle the gradient to one color at the bottom so the drip edge matches */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-jamred to-transparent" />
 
         <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-16 md:pb-28 md:pt-24">
           <p className="animate-rise-in text-xs font-bold uppercase tracking-[0.2em] text-cream/90">
-            Made in India · Real fruit pulp
+            Made in India · Wellness in a jar
           </p>
           <h1 className="mt-4 max-w-3xl animate-rise-in font-display text-5xl leading-[1.02] [animation-delay:0.1s] md:text-7xl">
             where every bite is a{" "}
@@ -111,75 +91,79 @@ export default function Home() {
             .
           </h1>
           <p className="mt-6 max-w-md animate-rise-in text-[15px] leading-relaxed text-cream/95 [animation-delay:0.22s]">
-            Fusion jams, chia-fortified classics and mess-free jam slices —
-            keep scrolling, the shelf unpacks itself. Or head straight to{" "}
+            We make jams for homes walking away from sugary, chemical-laden
+            spreads — real fruit, superfood seeds, and flavors with an Indian
+            soul. This page is the story;{" "}
             <Link href="/products" className="font-bold underline underline-offset-4 hover:text-marigold">
-              the shop
-            </Link>
-            .
+              the store is here
+            </Link>{" "}
+            when you&apos;re hungry.
           </p>
         </div>
       </section>
       <Drip className="-mt-px text-jamred" />
 
-      {/* Chapters — load and reveal as you scroll */}
-      {CHAPTERS.map((chapter) => {
-        const items = products?.filter((p) => categoryOf(p) === chapter.category);
-        return (
-          <section key={chapter.anchor} id={chapter.anchor} className="[scroll-margin-top:80px]">
-            <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-              <Reveal>
-                <div
-                  className={`grid items-center gap-8 md:grid-cols-[1fr_1.15fr] md:gap-14 ${
-                    chapter.flip ? "md:[direction:rtl]" : ""
-                  }`}
-                >
-                  <div
-                    className={`flex min-h-52 items-center justify-center gap-6 rounded-3xl p-10 ${CATEGORY_PLATES[chapter.category]} md:[direction:ltr]`}
-                  >
-                    {chapter.art}
-                  </div>
-                  <div className="md:[direction:ltr]">
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-jamred">
-                      {chapter.kicker}
-                    </p>
-                    <h2 className="mt-2 font-display text-3xl leading-[1.08] md:text-4xl">
-                      {chapter.heading}
-                    </h2>
-                    <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-maroon/85">
-                      {chapter.copy}
-                    </p>
-                    <Link
-                      href={chapter.link}
-                      className="mt-4 inline-block py-2 text-sm font-bold text-maroon underline underline-offset-4 hover:text-jamred"
-                    >
-                      See every {chapter.category.toLowerCase()} →
-                    </Link>
-                  </div>
-                </div>
-              </Reveal>
-
-              <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {items
-                  ? items.map((p, i) => (
-                      <Reveal key={p.id} delay={i * 90}>
-                        <ProductCard product={p} meta={CARD_META[p.slug]} tilt={chapter.tilt} />
-                      </Reveal>
-                    ))
-                  : [0, 1, 2].map((i) => <SkeletonCard key={i} />)}
+      {/* Values */}
+      <section className="mx-auto max-w-6xl px-6 py-14">
+        <Reveal>
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            {VALUES.map((v) => (
+              <div key={v.title}>
+                <h2 className="flex items-center gap-2 font-display text-lg leading-tight">
+                  <span className="h-2 w-2 shrink-0 rounded-full bg-jamred" />
+                  {v.title}
+                </h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-maroon/80">{v.text}</p>
               </div>
-              {error && (
-                <p className="mt-6 rounded-lg bg-jamred/10 p-4 text-jamred">
-                  Couldn&apos;t load the shelf: {error}. Refresh to try again.
-                </p>
-              )}
-            </div>
-          </section>
-        );
-      })}
+            ))}
+          </div>
+        </Reveal>
+      </section>
 
-      {/* Story teaser */}
-      <section className="bg-maroon text-cream">
+      {/* The range — story only, nothing to buy here */}
+      {CHAPTERS.map((chapter) => (
+        <section key={chapter.plateKey}>
+          <div className="mx-auto max-w-6xl px-6 py-12 md:py-16">
+            <Reveal>
+              <div
+                className={`grid items-center gap-8 md:grid-cols-[1fr_1.15fr] md:gap-14 ${
+                  chapter.flip ? "md:[direction:rtl]" : ""
+                }`}
+              >
+                <div
+                  className={`flex min-h-52 items-center justify-center gap-6 rounded-3xl p-10 ${CATEGORY_PLATES[chapter.plateKey]} md:[direction:ltr]`}
+                >
+                  {chapter.art}
+                </div>
+                <div className="md:[direction:ltr]">
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-jamred">
+                    {chapter.kicker}
+                  </p>
+                  <h2 className="mt-2 font-display text-3xl leading-[1.08] md:text-4xl">
+                    {chapter.heading}
+                  </h2>
+                  <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-maroon/85">
+                    {chapter.copy}
+                  </p>
+                  <p className="mt-4 flex flex-wrap gap-2">
+                    {chapter.flavors.map((flavor) => (
+                      <span
+                        key={flavor}
+                        className="rounded-full border border-maroon/20 px-3.5 py-1.5 text-[13px] font-semibold text-maroon/85"
+                      >
+                        {flavor}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      ))}
+
+      {/* Story band */}
+      <section className="mt-4 bg-maroon text-cream">
         <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
           <Reveal>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-marigold">
@@ -189,8 +173,8 @@ export default function Home() {
               A Made-in-India movement for how families eat, one jar at a time.
             </h2>
             <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-cream/90">
-              Health-conscious homes are walking away from sugary, chemical-laden
-              spreads. Jam Up exists to give them somewhere better to land.{" "}
+              From family kitchens to organic chains, hotels and flight
+              catering — every jar carries the same promise.{" "}
               <Link href="/story" className="font-bold underline underline-offset-4 hover:text-marigold">
                 Read how it started
               </Link>
@@ -201,22 +185,23 @@ export default function Home() {
       </section>
       <Drip className="-mt-px bg-marigold text-maroon" />
 
-      {/* Closing band */}
+      {/* The one door to the store */}
       <section className="bg-marigold text-maroon-dark">
-        <div className="mx-auto max-w-6xl px-6 py-14 text-center">
+        <div className="mx-auto max-w-6xl px-6 py-16 text-center md:py-20">
           <Reveal>
-            <h2 className="font-display text-4xl md:text-5xl">
-              Peel <span className="text-jamred">·</span> Place{" "}
-              <span className="text-jamred">·</span> Eat
+            <h2 className="mx-auto max-w-2xl font-display text-4xl leading-[1.08] md:text-5xl">
+              Convinced? The shelf is stocked.
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed">
-              First-of-their-kind Jam Slices: individually wrapped squares that
-              fit right between two slices of bread.{" "}
-              <Link href="/products#slices" className="font-bold underline underline-offset-4 hover:text-jamred">
-                Try the slices
-              </Link>
-              .
+            <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed">
+              Nine jars and slices, all real fruit, all made in India — ready
+              to travel from our kitchen to yours.
             </p>
+            <Link
+              href="/products"
+              className="mt-8 inline-block min-h-12 rounded-full bg-maroon px-10 py-3.5 font-bold text-cream transition hover:bg-maroon-dark"
+            >
+              Visit the store
+            </Link>
           </Reveal>
         </div>
       </section>
