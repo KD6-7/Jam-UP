@@ -193,34 +193,39 @@ export default function Home() {
         </section>
       ))}
 
-      {/* Story band */}
-      <section className="relative mt-4 overflow-hidden bg-maroon-dark text-cream">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/photos/story-kitchen.jpg"
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover object-right"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-maroon-dark via-maroon-dark/70 to-transparent" />
-        <div className="relative mx-auto max-w-6xl px-6 py-16 md:py-24">
-          <Reveal>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-marigold">
-              Our story
-            </p>
-            <h2 className="mt-3 max-w-2xl font-display text-3xl leading-[1.1] md:text-4xl">
-              A Made-in-India movement for how families eat, one jar at a time.
-            </h2>
-            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-cream/90">
-              From family kitchens to organic chains, hotels and flight
-              catering — every jar carries the same promise.{" "}
-              <Link href="/story" className="font-bold underline underline-offset-4 hover:text-marigold">
-                Read how it started
-              </Link>
-              .
-            </p>
-          </Reveal>
+      {/* Story band: text panel + its own photo panel, no background cropping */}
+      <section className="mt-4 overflow-hidden bg-maroon-dark text-cream">
+        <div className="mx-auto grid max-w-6xl md:grid-cols-[1.05fr_1fr]">
+          <div className="flex items-center px-6 py-14 md:py-20">
+            <Reveal>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-marigold">
+                Our story
+              </p>
+              <h2 className="mt-3 font-display text-3xl leading-[1.1] md:text-4xl">
+                A Made-in-India movement for how families eat, one jar at a time.
+              </h2>
+              <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-cream/90">
+                From family kitchens to organic chains, hotels and flight
+                catering — every jar carries the same promise.{" "}
+                <Link href="/story" className="font-bold underline underline-offset-4 hover:text-marigold">
+                  Read how it started
+                </Link>
+                .
+              </p>
+            </Reveal>
+          </div>
+          <div className="relative aspect-[16/10] md:aspect-auto">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/photos/story-pot.jpg"
+              alt="Hands stirring a copper pot of bubbling jam in a warm Indian home kitchen"
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* blend the photo's edge into the maroon panel */}
+            <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-maroon-dark to-transparent md:hidden" />
+            <div className="absolute inset-y-0 left-0 hidden w-24 bg-gradient-to-r from-maroon-dark to-transparent md:block" />
+          </div>
         </div>
       </section>
       <Drip className="-mt-px bg-marigold text-maroon-dark" />

@@ -13,21 +13,28 @@ export const metadata: Metadata = {
 export default function StoryPage() {
   return (
     <main>
-      <section className="relative overflow-hidden bg-maroon-dark text-cream">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/photos/story-kitchen.jpg"
-          alt="Hands stirring a copper pot of bubbling jam in a warm Indian home kitchen"
-          className="absolute inset-0 h-full w-full object-cover object-right"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-maroon-dark via-maroon-dark/70 to-transparent" />
-        <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-16 md:pb-32 md:pt-24">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-marigold">
-            Our story
-          </p>
-          <h1 className="mt-4 max-w-2xl font-display text-4xl leading-[1.05] md:text-6xl">
-            Wellness in a jar isn&apos;t a slogan. It&apos;s the whole plan.
-          </h1>
+      <section className="overflow-hidden bg-maroon-dark text-cream">
+        <div className="mx-auto grid max-w-6xl md:grid-cols-[1.1fr_1fr]">
+          <div className="flex items-center px-6 py-14 md:py-24">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-marigold">
+                Our story
+              </p>
+              <h1 className="mt-4 font-display text-4xl leading-[1.05] md:text-5xl">
+                Wellness in a jar isn&apos;t a slogan. It&apos;s the whole plan.
+              </h1>
+            </div>
+          </div>
+          <div className="relative aspect-[16/10] md:aspect-auto">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/photos/story-pot.jpg"
+              alt="Hands stirring a copper pot of bubbling jam in a warm Indian home kitchen"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-maroon-dark to-transparent md:hidden" />
+            <div className="absolute inset-y-0 left-0 hidden w-24 bg-gradient-to-r from-maroon-dark to-transparent md:block" />
+          </div>
         </div>
       </section>
       <Drip className="-mt-px text-maroon-dark" />
