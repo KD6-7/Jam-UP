@@ -1,15 +1,7 @@
 import Link from "next/link";
 
 import Drip from "@/components/Drip";
-import {
-  ChilliArt,
-  FigArt,
-  MangoArt,
-  OrangeSliceArt,
-  StrawberryArt,
-} from "@/components/FruitArt";
 import Reveal from "@/components/Reveal";
-import { CATEGORY_PLATES } from "@/lib/catalogMeta";
 
 const VALUES = [
   { title: "Real fruit pulp", text: "Every jar starts with actual fruit, not flavouring." },
@@ -24,8 +16,7 @@ const CHAPTERS: {
   heading: string;
   copy: string;
   flavors: string[];
-  art: React.ReactNode;
-  image?: { src: string; alt: string };
+  image: { src: string; alt: string };
   flip: boolean;
 }[] = [
   {
@@ -35,12 +26,6 @@ const CHAPTERS: {
     copy:
       "Mango with a slow chilli burn. Guava with street-cart heat. Ginger cutting through ripe sweetness. Our fusion range takes the flavor collisions of Indian streets and slow-cooks them into jars that are uniquely Indian in soul, globally appealing on toast.",
     flavors: ["Mango Chilli", "Mango Ginger", "Guava Chilli"],
-    art: (
-      <>
-        <MangoArt className="h-28 w-28 animate-float [--float-tilt:-8deg]" />
-        <ChilliArt className="h-24 w-24 animate-float [--float-tilt:10deg] [animation-delay:1.2s]" />
-      </>
-    ),
     image: {
       src: "/photos/fusion-plate.jpg",
       alt: "A steaming swirl of mango-chilli jam beside cubed mango and red chillies on dark wood",
@@ -54,12 +39,6 @@ const CHAPTERS: {
     copy:
       "Apple-cinnamon, fig, mango — the flavors your mornings already love, folded through with chia seeds. Fibre, protein and omega-3s arrive uninvited and unnoticed, because wellness should taste like jam, not like homework.",
     flavors: ["Apple Cinnamon Chia", "Fig Chia", "Mango Chia"],
-    art: (
-      <>
-        <FigArt className="h-28 w-28 animate-float [--float-tilt:6deg]" />
-        <OrangeSliceArt className="h-24 w-24 animate-float [--float-tilt:-6deg] [animation-delay:0.8s]" />
-      </>
-    ),
     image: {
       src: "/photos/chia-plate.jpg",
       alt: "Halved figs, apple slices, cinnamon sticks and a spoon of chia-flecked jam on a wooden table",
@@ -73,7 +52,6 @@ const CHAPTERS: {
     copy:
       "Individually wrapped squares of jam that fit sliced bread exactly — peel, place, eat. No jar, no knife, no mess. First of their kind in India, built for school tiffins, train windows and anywhere bread happens.",
     flavors: ["Strawberry", "Mango", "Mixed Fruit"],
-    art: <StrawberryArt className="h-32 w-32 animate-float [--float-tilt:-5deg]" />,
     image: {
       src: "/photos/slices-plate.jpg",
       alt: "A square jam slice on white bread with one corner peeled up, strawberries and a lunchbox behind",
@@ -151,25 +129,17 @@ export default function Home() {
                   chapter.flip ? "md:[direction:rtl]" : ""
                 }`}
               >
-                {chapter.image ? (
-                  <div className="overflow-hidden rounded-3xl md:[direction:ltr]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={chapter.image.src}
-                      alt={chapter.image.alt}
-                      loading="lazy"
-                      className="h-64 w-full object-cover md:h-80"
-                    />
-                  </div>
-                ) : (
-                  <div
-                    className={`flex min-h-52 items-center justify-center gap-6 rounded-3xl p-10 ${CATEGORY_PLATES[chapter.plateKey]} md:[direction:ltr]`}
-                  >
-                    {chapter.art}
-                  </div>
-                )}
+                <div className="overflow-hidden rounded-3xl md:[direction:ltr]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={chapter.image.src}
+                    alt={chapter.image.alt}
+                    loading="lazy"
+                    className="h-64 w-full object-cover md:h-80"
+                  />
+                </div>
                 <div className="md:[direction:ltr]">
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-jamred">
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-maroon/80">
                     {chapter.kicker}
                   </p>
                   <h2 className="mt-2 font-display text-3xl leading-[1.08] md:text-4xl">
@@ -178,12 +148,10 @@ export default function Home() {
                   <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-maroon/85">
                     {chapter.copy}
                   </p>
-                  <p className="mt-4 flex flex-wrap gap-2">
-                    {chapter.flavors.map((flavor) => (
-                      <span
-                        key={flavor}
-                        className="rounded-full border border-maroon/20 px-3.5 py-1.5 text-[13px] font-semibold text-maroon/85"
-                      >
+                  <p className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[13px] font-semibold text-maroon/85">
+                    {chapter.flavors.map((flavor, i) => (
+                      <span key={flavor} className="flex items-center gap-2.5">
+                        {i > 0 && <span className="h-1 w-1 rounded-full bg-jamred" aria-hidden="true" />}
                         {flavor}
                       </span>
                     ))}

@@ -40,7 +40,7 @@ export default function CartPage() {
             Your toast deserves better — go pick a jar.
           </p>
           <Link
-            href="/#fusion"
+            href="/products"
             className="mt-5 inline-block min-h-11 rounded-full bg-marigold px-7 py-3 text-sm font-bold text-maroon-dark transition hover:bg-maroon hover:text-cream"
           >
             Browse the shelf

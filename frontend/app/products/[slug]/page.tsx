@@ -142,20 +142,25 @@ export default function ProductPage() {
 
             {meta?.tile && (
               <div className="mt-3 flex items-center justify-center gap-2">
-                <button
-                  onClick={() => goToSlide(0)}
-                  aria-label="Show the ingredients"
-                  className={`h-2.5 rounded-full transition-all ${
-                    slide === 0 ? "w-8 bg-maroon" : "w-2.5 bg-maroon/30 hover:bg-maroon/50"
-                  }`}
-                />
-                <button
-                  onClick={() => goToSlide(1)}
-                  aria-label="Show the jar"
-                  className={`h-2.5 rounded-full transition-all ${
-                    slide === 1 ? "w-8 bg-maroon" : "w-2.5 bg-maroon/30 hover:bg-maroon/50"
-                  }`}
-                />
+                {[
+                  { index: 0, label: "Show the ingredients" },
+                  { index: 1, label: "Show the jar" },
+                ].map((dot) => (
+                  <button
+                    key={dot.index}
+                    onClick={() => goToSlide(dot.index)}
+                    aria-label={dot.label}
+                    className="group p-2"
+                  >
+                    <span
+                      className={`block h-2.5 rounded-full transition-all ${
+                        slide === dot.index
+                          ? "w-8 bg-maroon"
+                          : "w-2.5 bg-maroon/30 group-hover:bg-maroon/50"
+                      }`}
+                    />
+                  </button>
+                ))}
               </div>
             )}
           </div>
@@ -163,7 +168,7 @@ export default function ProductPage() {
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-maroon/75">
               {categoryOf(product)}
-              {meta && <span className="text-jamred"> · {meta.badge}</span>}
+              {meta && <span> · {meta.badge}</span>}
             </p>
             <h1 className="mt-2 font-display text-4xl leading-[1.05] md:text-5xl">
               {product.name}

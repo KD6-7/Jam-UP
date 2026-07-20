@@ -117,7 +117,7 @@ export default function CheckoutPage() {
         <div className="mt-10 rounded-2xl border-2 border-dashed border-maroon/35 p-10 text-center">
           <p className="font-display text-xl">Your cart is empty.</p>
           <Link
-            href="/#fusion"
+            href="/products"
             className="mt-5 inline-block min-h-11 rounded-full bg-marigold px-7 py-3 text-sm font-bold text-maroon-dark transition hover:bg-maroon hover:text-cream"
           >
             Browse the shelf
