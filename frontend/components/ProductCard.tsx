@@ -39,33 +39,43 @@ export default function ProductCard({
       href={`/products/${product.slug}`}
       className="group flex flex-col rounded-2xl border border-maroon/10 bg-cream-light p-4 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-maroon-dark/10"
     >
-      {/* Sticker-framed photo on its flavor plate; image stays under natural size so it's crisp */}
+      {/* Ingredient tile when we have one; otherwise sticker photo on its flavor plate */}
       <div
-        className={`relative flex h-52 items-center justify-center rounded-xl ${meta?.plate ?? "bg-white"}`}
+        className={`relative flex h-52 items-center justify-center overflow-hidden rounded-xl ${meta?.plate ?? "bg-white"}`}
       >
-        <div
-          className={`flex h-44 w-40 items-center justify-center rounded-xl bg-white p-2 shadow-md shadow-maroon-dark/20 transition duration-200 ${tilt} group-hover:rotate-0`}
-        >
-          {product.image_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={product.image_url}
-              alt={product.name}
-              className="max-h-40 max-w-full object-contain"
-            />
-          ) : (
-            <span className="font-display text-3xl text-marigold">jam</span>
-          )}
-        </div>
+        {meta?.tile ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={meta.tile}
+            alt={`${product.name} ingredients`}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <div
+            className={`flex h-44 w-40 items-center justify-center rounded-xl bg-white p-2 shadow-md shadow-maroon-dark/20 transition duration-200 ${tilt} group-hover:rotate-0`}
+          >
+            {product.image_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="max-h-40 max-w-full object-contain"
+              />
+            ) : (
+              <span className="font-display text-3xl text-marigold">jam</span>
+            )}
+          </div>
+        )}
         {meta && (
           <span
-            className={`absolute left-0 top-1 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${meta.badgeClass}`}
+            className={`absolute left-2 top-2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${meta.badgeClass}`}
           >
             {meta.badge}
           </span>
         )}
         {inCart > 0 && (
-          <span className="absolute right-0 top-1 flex h-7 min-w-7 items-center justify-center rounded-full bg-maroon px-1.5 text-xs font-bold text-cream">
+          <span className="absolute right-2 top-2 flex h-7 min-w-7 items-center justify-center rounded-full bg-maroon px-1.5 text-xs font-bold text-cream">
             ×{inCart}
           </span>
         )}

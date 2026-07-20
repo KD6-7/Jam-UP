@@ -6,6 +6,8 @@ import type { CardMeta } from "@/components/ProductCard";
 export interface ProductMeta extends CardMeta {
   /** Tailwind gradient classes for this flavor's plate */
   plate: string;
+  /** 1:1 ingredient photograph for cards and the PDP gallery */
+  tile?: string;
   /** Narrative flavor story for the product page, one string per paragraph */
   story: string[];
 }
@@ -16,6 +18,7 @@ export const CARD_META: Record<string, ProductMeta> = {
     badge: "Bestseller",
     badgeClass: "bg-jamred text-cream",
     plate: "bg-gradient-to-br from-mango to-jamred",
+    tile: "/photos/tiles/mango-chilli-jam.jpg",
     story: [
       "Every Indian summer has a moment where mango meets chilli — a wedge of ripe fruit, a pinch of red powder, eyes closed. This jam bottles that moment. We start with real mango pulp, sweeten it with sulphur-less sugar, and let red chilli build slowly instead of shouting over the fruit.",
       "Spread it thick on hot toast, melt it over grilled paneer, or serve it beside a cheese board and watch it disappear first. The heat arrives late and leaves politely — enough to wake the mango up, never enough to need a glass of water.",
@@ -26,6 +29,7 @@ export const CARD_META: Record<string, ProductMeta> = {
     badge: "Zingy",
     badgeClass: "bg-maroon text-cream",
     plate: "bg-gradient-to-br from-mango to-marigold",
+    tile: "/photos/tiles/mango-ginger-jam.jpg",
     story: [
       "Ginger has sharpened Indian kitchens for centuries — grated into chai, pounded into pastes, sliced into pickles. Here it cuts through sweet mango pulp with a clean, warming zing that makes the fruit taste more like itself.",
       "This is the jar for winter mornings: stirred into porridge, spread on paratha, or whisked into a glaze for roast vegetables. Real fruit pulp, sulphur-less sugar, no artificial anything — just mango and ginger doing what they've always done together.",
@@ -36,6 +40,7 @@ export const CARD_META: Record<string, ProductMeta> = {
     badge: "Sweet heat",
     badgeClass: "bg-jamred text-cream",
     plate: "bg-gradient-to-br from-guava to-jamred",
+    tile: "/photos/tiles/guava-chilli-jam.jpg",
     story: [
       "Outside every Indian school gate there was a cart: guavas split open, rubbed with chilli-salt, handed over wrapped in newspaper. This jam is that memory, slow-cooked. Fragrant pink guava pulp meets a confident chilli edge, balanced with sulphur-less sugar.",
       "It belongs on buttered toast, alongside sharp cheddar, or spooned over dahi as an unapologetic dessert. One jar in, you'll understand why the cart always had a queue.",
@@ -46,6 +51,7 @@ export const CARD_META: Record<string, ProductMeta> = {
     badge: "Chia boost",
     badgeClass: "bg-fig text-cream",
     plate: "bg-gradient-to-br from-jamred to-guava",
+    tile: "/photos/tiles/apple-cinnamon-chia-jam.jpg",
     story: [
       "Apples and cinnamon have been comforting people for as long as ovens have existed. We slow-cook them into a soft, spiced jam and fold in chia seeds — tiny, nutty pearls that carry fibre, protein and omega-3s into your breakfast without asking for credit.",
       "Swirl it into yoghurt, layer it over pancakes, or eat it the honest way: straight off the spoon while the toast is still in the toaster. Wellness that tastes like pie filling.",
@@ -56,6 +62,7 @@ export const CARD_META: Record<string, ProductMeta> = {
     badge: "Chia boost",
     badgeClass: "bg-fig text-cream",
     plate: "bg-gradient-to-br from-guava to-fig",
+    tile: "/photos/tiles/fig-chia-jam.jpg",
     story: [
       "Figs barely need help becoming jam — they're halfway there on the tree. We take dark, honeyed figs, cook them low and slow, and fold in chia seeds for texture and everyday nutrition. The result is deep, sticky and quietly luxurious.",
       "Pair it with anything that loves sweetness with gravity: aged cheese, morning porridge, a peanut-butter sandwich that deserves promotion. This is the jar that makes people ask where you bought it.",
@@ -66,6 +73,7 @@ export const CARD_META: Record<string, ProductMeta> = {
     badge: "Chia boost",
     badgeClass: "bg-fig text-cream",
     plate: "bg-gradient-to-br from-mango to-guava",
+    tile: "/photos/tiles/mango-chia-jam.jpg",
     story: [
       "Mango jam is the taste most Indian childhoods share — the jar that emptied faster than any other. Ours keeps that sunshine sweetness, made from real pulp and sulphur-less sugar, and adds chia seeds so the nostalgic choice is also the sensible one.",
       "It disappears into tiffin sandwiches, milkshakes and midnight toast. The chia is there working either way.",

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { categoryOf, fetchProduct, formatPaise, type Product } from "@/lib/api";
 import { CARD_META } from "@/lib/catalogMeta";
@@ -25,6 +25,13 @@ export default function ProductPage() {
   const [qty, setQty] = useState(1);
   const { setQuantity, items } = useCart();
   const [justAdded, setJustAdded] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [slide, setSlide] = useState(0);
+
+  const goToSlide = (i: number) => {
+    const track = trackRef.current;
+    if (track) track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" });
+  };
 
   const inCart = product
     ? items.find((e) => e.product.id === product.id)?.quantity ?? 0
@@ -91,24 +98,64 @@ export default function ProductPage() {
 
       {product && (
         <div className="mt-8 grid items-start gap-10 md:grid-cols-2 md:gap-14">
-          {/* Flavor plate with sticker photo */}
-          <div
-            className={`flex items-center justify-center rounded-3xl p-10 md:sticky md:top-24 ${
-              meta?.plate ?? "bg-cream-light"
-            }`}
-          >
-            <div className="-rotate-2 rounded-2xl bg-white p-4 shadow-xl shadow-maroon-dark/25">
-              {product.image_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={product.image_url}
-                  alt={product.name}
-                  className="max-h-72 w-auto"
-                />
-              ) : (
-                <span className="font-display text-5xl text-marigold">jam</span>
+          {/* Gallery: ingredient tile first, scroll/swipe to the jar itself */}
+          <div className="md:sticky md:top-24">
+            <div
+              ref={trackRef}
+              onScroll={(e) => {
+                const t = e.currentTarget;
+                setSlide(Math.round(t.scrollLeft / t.clientWidth));
+              }}
+              className="flex snap-x snap-mandatory overflow-x-auto rounded-3xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {meta?.tile && (
+                <div className="w-full shrink-0 snap-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={meta.tile}
+                    alt={`${product.name} — the fruit and spices that go in`}
+                    className="aspect-square w-full object-cover"
+                  />
+                </div>
               )}
+              <div
+                className={`flex aspect-square w-full shrink-0 snap-center items-center justify-center p-8 ${
+                  meta?.plate ?? "bg-cream-light"
+                }`}
+              >
+                <div className="-rotate-2 rounded-2xl bg-white p-4 shadow-xl shadow-maroon-dark/25">
+                  {product.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={product.image_url}
+                      alt={`${product.name} jar`}
+                      className="max-h-64 w-auto"
+                    />
+                  ) : (
+                    <span className="font-display text-5xl text-marigold">jam</span>
+                  )}
+                </div>
+              </div>
             </div>
+
+            {meta?.tile && (
+              <div className="mt-3 flex items-center justify-center gap-2">
+                <button
+                  onClick={() => goToSlide(0)}
+                  aria-label="Show the ingredients"
+                  className={`h-2.5 rounded-full transition-all ${
+                    slide === 0 ? "w-8 bg-maroon" : "w-2.5 bg-maroon/30 hover:bg-maroon/50"
+                  }`}
+                />
+                <button
+                  onClick={() => goToSlide(1)}
+                  aria-label="Show the jar"
+                  className={`h-2.5 rounded-full transition-all ${
+                    slide === 1 ? "w-8 bg-maroon" : "w-2.5 bg-maroon/30 hover:bg-maroon/50"
+                  }`}
+                />
+              </div>
+            )}
           </div>
 
           <div>
