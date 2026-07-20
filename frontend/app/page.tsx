@@ -85,41 +85,47 @@ const CHAPTERS: {
 export default function Home() {
   return (
     <main>
-      {/* Hero — the drip made real; gradient stays as the loading fallback */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-mango via-jamred to-fig text-cream">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/photos/hero.jpg"
-          alt="A ribbon of red jam dripping from a ceramic spoon into an open jar, surrounded by mango, chillies, guava and fig"
-          className="absolute inset-0 h-full w-full object-cover object-right"
-        />
-        {/* left scrim keeps the headline readable at every crop */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-maroon-dark/95 via-maroon-dark/55 to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-maroon to-transparent" />
+      {/* Hero — text on solid maroon, the drip photo in its own panel */}
+      <section className="overflow-hidden bg-maroon-dark text-cream">
+        <div className="mx-auto grid max-w-6xl md:grid-cols-[1.1fr_1fr]">
+          <div className="flex items-center px-6 py-16 md:py-24">
+            <div>
+              <p className="animate-rise-in text-xs font-bold uppercase tracking-[0.2em] text-cream/90">
+                Made in India · Wellness in a jar
+              </p>
+              <h1 className="mt-4 animate-rise-in font-display text-5xl leading-[1.02] [animation-delay:0.1s] md:text-6xl">
+                where every bite is a{" "}
+                <span className="underline decoration-wavy decoration-cream/60 underline-offset-8">
+                  delight
+                </span>
+                .
+              </h1>
+              <p className="mt-6 max-w-md animate-rise-in text-[15px] leading-relaxed text-cream/95 [animation-delay:0.22s]">
+                We make jams for homes walking away from sugary, chemical-laden
+                spreads — real fruit, superfood seeds, and flavors with an
+                Indian soul. This page is the story;{" "}
+                <Link href="/products" className="font-bold underline underline-offset-4 hover:text-marigold">
+                  the store is here
+                </Link>{" "}
+                when you&apos;re hungry.
+              </p>
+            </div>
+          </div>
 
-        <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-16 md:pb-28 md:pt-24">
-          <p className="animate-rise-in text-xs font-bold uppercase tracking-[0.2em] text-cream/90">
-            Made in India · Wellness in a jar
-          </p>
-          <h1 className="mt-4 max-w-3xl animate-rise-in font-display text-5xl leading-[1.02] [animation-delay:0.1s] md:text-7xl">
-            where every bite is a{" "}
-            <span className="underline decoration-wavy decoration-cream/60 underline-offset-8">
-              delight
-            </span>
-            .
-          </h1>
-          <p className="mt-6 max-w-md animate-rise-in text-[15px] leading-relaxed text-cream/95 [animation-delay:0.22s]">
-            We make jams for homes walking away from sugary, chemical-laden
-            spreads — real fruit, superfood seeds, and flavors with an Indian
-            soul. This page is the story;{" "}
-            <Link href="/products" className="font-bold underline underline-offset-4 hover:text-marigold">
-              the store is here
-            </Link>{" "}
-            when you&apos;re hungry.
-          </p>
+          <div className="relative aspect-[4/3] md:aspect-auto">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/photos/hero.jpg"
+              alt="A ribbon of red jam dripping from a ceramic spoon into an open jar, surrounded by mango, chillies, guava and fig"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* blend the photo's edge into the maroon panel */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-maroon-dark to-transparent md:hidden" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-28 bg-gradient-to-r from-maroon-dark to-transparent md:block" />
+          </div>
         </div>
       </section>
-      <Drip className="-mt-px text-maroon" />
+      <Drip className="-mt-px text-maroon-dark" />
 
       {/* Values */}
       <section className="mx-auto max-w-6xl px-6 py-14">
