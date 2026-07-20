@@ -95,7 +95,7 @@ export default function Home() {
         />
         {/* left scrim keeps the headline readable at every crop */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-maroon-dark/95 via-maroon-dark/55 to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-jamred to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-maroon to-transparent" />
 
         <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-16 md:pb-28 md:pt-24">
           <p className="animate-rise-in text-xs font-bold uppercase tracking-[0.2em] text-cream/90">
@@ -119,7 +119,7 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <Drip className="-mt-px text-jamred" />
+      <Drip className="-mt-px text-maroon" />
 
       {/* Values */}
       <section className="mx-auto max-w-6xl px-6 py-14">
