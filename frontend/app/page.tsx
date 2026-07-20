@@ -41,6 +41,10 @@ const CHAPTERS: {
         <ChilliArt className="h-24 w-24 animate-float [--float-tilt:10deg] [animation-delay:1.2s]" />
       </>
     ),
+    image: {
+      src: "/photos/fusion-plate.jpg",
+      alt: "A steaming swirl of mango-chilli jam beside cubed mango and red chillies on dark wood",
+    },
     flip: false,
   },
   {
@@ -225,7 +229,18 @@ export default function Home() {
       <section className="bg-marigold text-maroon-dark">
         <div className="mx-auto max-w-6xl px-6 py-16 text-center md:py-20">
           <Reveal>
-            <h2 className="mx-auto max-w-2xl font-display text-4xl leading-[1.08] md:text-5xl">
+            <div className="overflow-hidden rounded-3xl shadow-lg shadow-maroon-dark/15">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/photos/peel-place-eat.jpg"
+                alt="Three steps: a wrapped jam slice, a hand placing the slice on bread, and the finished sandwich with a bite taken"
+                loading="lazy"
+                className="w-full object-cover"
+              />
+            </div>
+          </Reveal>
+          <Reveal>
+            <h2 className="mx-auto mt-10 max-w-2xl font-display text-4xl leading-[1.08] md:text-5xl">
               Convinced? The shelf is stocked.
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed">
