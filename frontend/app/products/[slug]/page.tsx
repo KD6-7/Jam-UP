@@ -29,8 +29,10 @@ export default function ProductPage() {
   const [slide, setSlide] = useState(0);
 
   const goToSlide = (i: number) => {
+    setSlide(i);
+    // Instant scroll: smooth scrolling gets cancelled by scroll-snap on WebKit
     const track = trackRef.current;
-    if (track) track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" });
+    if (track) track.scrollTo({ left: i * track.clientWidth });
   };
 
   const inCart = product
