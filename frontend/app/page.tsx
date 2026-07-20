@@ -85,11 +85,16 @@ const CHAPTERS: {
 export default function Home() {
   return (
     <main>
-      {/* Hero — brand first, one quiet path to the store */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-mango via-jamred to-fig bg-[length:200%_200%] text-cream animate-gradient-drift">
-        <MangoArt className="absolute right-[8%] top-12 h-24 w-24 animate-float opacity-90 [--float-tilt:-10deg] md:h-32 md:w-32" />
-        <StrawberryArt className="absolute right-[28%] top-32 hidden h-20 w-20 animate-float opacity-90 [--float-tilt:8deg] [animation-delay:1.5s] md:block" />
-        <ChilliArt className="absolute bottom-24 right-[14%] hidden h-24 w-24 animate-float opacity-90 [--float-tilt:14deg] [animation-delay:0.7s] md:block" />
+      {/* Hero — the drip made real; gradient stays as the loading fallback */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-mango via-jamred to-fig text-cream">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/photos/hero.jpg"
+          alt="A ribbon of red jam dripping from a ceramic spoon into an open jar, surrounded by mango, chillies, guava and fig"
+          className="absolute inset-0 h-full w-full object-cover object-right"
+        />
+        {/* left scrim keeps the headline readable at every crop */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-maroon-dark/95 via-maroon-dark/55 to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-jamred to-transparent" />
 
         <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-16 md:pb-28 md:pt-24">
