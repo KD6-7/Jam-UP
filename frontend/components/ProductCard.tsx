@@ -12,6 +12,8 @@ export interface CardMeta {
   badgeClass: string; // e.g. "bg-jamred text-cream"
   /** Optional flavor-gradient classes behind the sticker */
   plate?: string;
+  /** Optional 1:1 ingredient photograph shown instead of the sticker */
+  tile?: string;
 }
 
 export default function ProductCard({
