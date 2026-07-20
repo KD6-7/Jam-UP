@@ -7,10 +7,19 @@ import { useAuth } from "@/lib/auth";
 import { useCart } from "@/lib/cart";
 
 const NAV = [
-  { href: "/#fusion", label: "Fusion" },
-  { href: "/#chia", label: "Chia" },
-  { href: "/#slices", label: "Slices" },
+  { href: "/products", label: "Shop" },
+  { href: "/story", label: "Our Story" },
+  { href: "/contact", label: "Contact" },
 ];
+
+function CartIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 7h12l1.2 13a1 1 0 0 1-1 1.1H5.8a1 1 0 0 1-1-1.1L6 7Z" />
+      <path d="M9 10V6a3 3 0 0 1 6 0v4" />
+    </svg>
+  );
+}
 
 export default function Header() {
   const { user, signOut } = useAuth();
@@ -28,7 +37,7 @@ export default function Header() {
             className="h-11 w-11 rounded-full object-cover"
           />
           <span className="flex flex-col">
-            <span className="font-display text-[22px] font-bold leading-none tracking-tight">
+            <span className="font-display text-[22px] leading-none tracking-tight">
               jam up
             </span>
             <span className="hidden text-[10px] font-bold uppercase tracking-[0.14em] text-maroon/75 sm:block">
@@ -37,60 +46,45 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-2 sm:gap-5">
+        <nav className="flex items-center gap-1 sm:gap-4">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="hidden px-1 py-2.5 text-sm font-semibold text-maroon hover:text-jamred md:block"
+              className="hidden px-2 py-2.5 text-sm font-semibold text-maroon hover:text-jamred md:block"
             >
               {item.label}
             </Link>
           ))}
 
-          <Link
-            href="/cart"
-            className="relative rounded-full bg-maroon px-5 py-2.5 text-sm font-semibold text-cream transition hover:bg-maroon-dark"
-          >
-            Cart
-            {count > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-6 min-w-6 items-center justify-center rounded-full bg-marigold px-1.5 text-xs font-bold text-maroon-dark">
-                {count}
-              </span>
-            )}
-          </Link>
-
           {user ? (
-            <span className="hidden items-center gap-2 md:flex">
-              {user.picture_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={user.picture_url}
-                  alt={user.name ?? user.email}
-                  title={user.name ?? user.email}
-                  className="h-9 w-9 rounded-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-marigold text-sm font-bold text-maroon-dark">
-                  {(user.name ?? user.email).charAt(0).toUpperCase()}
-                </span>
-              )}
-              <button
-                onClick={signOut}
-                className="px-1 py-2.5 text-sm font-semibold text-maroon/75 hover:text-jamred"
-              >
-                Sign out
-              </button>
-            </span>
+            <button
+              onClick={signOut}
+              className="hidden px-2 py-2.5 text-sm font-semibold text-maroon/75 hover:text-jamred md:block"
+            >
+              Sign out
+            </button>
           ) : (
             <Link
               href="/login"
-              className="hidden px-1 py-2.5 text-sm font-semibold text-maroon hover:text-jamred md:block"
+              className="hidden px-2 py-2.5 text-sm font-semibold text-maroon hover:text-jamred md:block"
             >
               Sign in
             </Link>
           )}
+
+          <Link
+            href="/cart"
+            aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}
+            className="relative flex h-11 w-11 items-center justify-center rounded-full text-maroon transition hover:bg-maroon hover:text-cream"
+          >
+            <CartIcon />
+            {count > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-jamred px-1 text-[11px] font-bold text-cream">
+                {count}
+              </span>
+            )}
+          </Link>
 
           {/* Mobile menu toggle */}
           <button

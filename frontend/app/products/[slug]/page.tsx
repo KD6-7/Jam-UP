@@ -22,7 +22,8 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { add, items } = useCart();
+  const [qty, setQty] = useState(1);
+  const { setQuantity, items } = useCart();
   const [justAdded, setJustAdded] = useState(false);
 
   const inCart = product
@@ -38,20 +39,17 @@ export default function ProductPage() {
 
   const handleAdd = () => {
     if (!product) return;
-    add(product);
+    setQuantity(product, inCart + qty);
     setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 1200);
+    setTimeout(() => setJustAdded(false), 1400);
   };
 
   const meta = product ? CARD_META[product.slug] : undefined;
-  const backAnchor = product
-    ? { "Fusion Jam": "fusion", "Chia Jam": "chia", "Jam Slices": "slices" }[categoryOf(product)]
-    : "fusion";
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-10">
       <Link
-        href={`/#${backAnchor}`}
+        href="/products"
         className="inline-block py-2 text-sm font-semibold text-maroon hover:text-jamred"
       >
         ← Back to the shelf
@@ -66,35 +64,40 @@ export default function ProductPage() {
       {notFound && (
         <div className="mt-16 text-center">
           <h1 className="font-display text-3xl">Jar not found</h1>
-          <p className="mt-2 text-maroon/80">
+          <p className="mt-2 text-maroon/85">
             It may have been discontinued — the shelf has plenty more.
           </p>
           <Link
-            href="/"
+            href="/products"
             className="mt-6 inline-block min-h-11 rounded-full bg-maroon px-7 py-3 text-sm font-bold text-cream transition hover:bg-maroon-dark"
           >
-            Back to the store
+            Back to the shelf
           </Link>
         </div>
       )}
 
       {!error && !notFound && product === null && (
         <div className="mt-10 grid animate-pulse gap-10 md:grid-cols-2">
-          <div className="mx-auto h-80 w-64 -rotate-2 rounded-2xl bg-maroon/10" />
+          <div className="h-96 rounded-3xl bg-maroon/10" />
           <div className="space-y-4">
             <div className="h-4 w-24 rounded bg-maroon/10" />
             <div className="h-10 w-3/4 rounded bg-maroon/10" />
             <div className="h-4 w-full rounded bg-maroon/10" />
             <div className="h-4 w-2/3 rounded bg-maroon/10" />
-            <div className="h-12 w-44 rounded-full bg-maroon/10" />
+            <div className="h-12 w-52 rounded-full bg-maroon/10" />
           </div>
         </div>
       )}
 
       {product && (
-        <div className="mt-8 grid items-center gap-10 md:mt-12 md:grid-cols-2 md:gap-14">
-          <div className="flex justify-center">
-            <div className="-rotate-2 rounded-2xl bg-white p-4 shadow-xl shadow-maroon-dark/15">
+        <div className="mt-8 grid items-start gap-10 md:grid-cols-2 md:gap-14">
+          {/* Flavor plate with sticker photo */}
+          <div
+            className={`flex items-center justify-center rounded-3xl p-10 md:sticky md:top-24 ${
+              meta?.plate ?? "bg-cream-light"
+            }`}
+          >
+            <div className="-rotate-2 rounded-2xl bg-white p-4 shadow-xl shadow-maroon-dark/25">
               {product.image_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -117,7 +120,7 @@ export default function ProductPage() {
               {product.name}
             </h1>
             {meta && (
-              <p className="mt-2 text-[15px] italic text-maroon/80">{meta.tagline}</p>
+              <p className="mt-2 text-[15px] italic text-maroon/85">{meta.tagline}</p>
             )}
 
             <p className="mt-5 flex items-baseline gap-2">
@@ -129,26 +132,56 @@ export default function ProductPage() {
               </span>
             </p>
 
-            <p className="mt-5 max-w-md leading-relaxed text-maroon/90">
-              {product.description}
-            </p>
-
-            <div className="mt-7 flex items-center gap-4">
+            {/* Quantity + add */}
+            <div className="mt-6 flex flex-wrap items-center gap-4">
+              <div className="flex items-center gap-1 rounded-full border-2 border-maroon/20 p-1">
+                <button
+                  aria-label="Decrease quantity"
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  className="flex h-11 w-11 items-center justify-center rounded-full text-lg font-bold hover:bg-maroon hover:text-cream"
+                >
+                  −
+                </button>
+                <span className="w-8 text-center text-lg font-bold" aria-live="polite">
+                  {qty}
+                </span>
+                <button
+                  aria-label="Increase quantity"
+                  onClick={() => setQty((q) => Math.min(99, q + 1))}
+                  className="flex h-11 w-11 items-center justify-center rounded-full text-lg font-bold hover:bg-maroon hover:text-cream"
+                >
+                  +
+                </button>
+              </div>
               <button
                 onClick={handleAdd}
-                className={`min-h-12 rounded-full px-9 py-3 font-bold transition ${
+                className={`min-h-12 rounded-full px-8 py-3 font-bold transition ${
                   justAdded
                     ? "bg-maroon text-cream"
                     : "bg-marigold text-maroon-dark hover:bg-maroon hover:text-cream"
                 }`}
               >
-                {justAdded ? "Added to cart ✓" : "Add to cart"}
+                {justAdded
+                  ? "Added ✓"
+                  : `Add ${qty > 1 ? `${qty} jars` : "to cart"}`}
               </button>
-              {inCart > 0 && (
-                <Link href="/cart" className="text-sm font-semibold text-maroon hover:text-jamred">
-                  {inCart} in cart →
+            </div>
+            {inCart > 0 && (
+              <p className="mt-3 text-sm font-semibold text-maroon/85">
+                {inCart} in your cart ·{" "}
+                <Link href="/cart" className="underline underline-offset-4 hover:text-jamred">
+                  view cart
                 </Link>
-              )}
+              </p>
+            )}
+
+            {/* Flavor story */}
+            <div className="mt-8 space-y-4 border-t border-maroon/10 pt-7">
+              {(meta?.story ?? [product.description]).map((para) => (
+                <p key={para.slice(0, 24)} className="max-w-prose leading-relaxed text-maroon/90">
+                  {para}
+                </p>
+              ))}
             </div>
 
             <ul className="mt-8 space-y-1.5 text-sm text-maroon/85">

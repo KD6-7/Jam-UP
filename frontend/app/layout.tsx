@@ -46,10 +46,10 @@ export default function RootLayout({
                 Where every bite is a delight. Made in India with real fruit
                 pulp, sulphur-less sugar and zero artificial additives.
               </p>
-              <nav className="flex gap-6 text-sm font-semibold">
-                <Link href="/#fusion" className="text-cream/90 hover:text-marigold">Fusion</Link>
-                <Link href="/#chia" className="text-cream/90 hover:text-marigold">Chia</Link>
-                <Link href="/#slices" className="text-cream/90 hover:text-marigold">Slices</Link>
+              <nav className="flex flex-wrap gap-6 text-sm font-semibold">
+                <Link href="/products" className="text-cream/90 hover:text-marigold">Shop</Link>
+                <Link href="/story" className="text-cream/90 hover:text-marigold">Our Story</Link>
+                <Link href="/contact" className="text-cream/90 hover:text-marigold">Contact</Link>
                 <Link href="/cart" className="text-cream/90 hover:text-marigold">Cart</Link>
               </nav>
             </div>

@@ -10,6 +10,8 @@ export interface CardMeta {
   tagline: string;
   badge: string;
   badgeClass: string; // e.g. "bg-jamred text-cream"
+  /** Optional flavor-gradient classes behind the sticker */
+  plate?: string;
 }
 
 export default function ProductCard({
@@ -37,10 +39,12 @@ export default function ProductCard({
       href={`/products/${product.slug}`}
       className="group flex flex-col rounded-2xl border border-maroon/10 bg-cream-light p-4 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-maroon-dark/10"
     >
-      {/* Sticker-framed photo: shown under its natural pixel size, so it stays crisp */}
-      <div className="relative flex h-52 items-center justify-center">
+      {/* Sticker-framed photo on its flavor plate; image stays under natural size so it's crisp */}
+      <div
+        className={`relative flex h-52 items-center justify-center rounded-xl ${meta?.plate ?? "bg-white"}`}
+      >
         <div
-          className={`flex h-44 w-40 items-center justify-center rounded-xl bg-white p-2 shadow-md shadow-maroon-dark/10 transition duration-200 ${tilt} group-hover:rotate-0`}
+          className={`flex h-44 w-40 items-center justify-center rounded-xl bg-white p-2 shadow-md shadow-maroon-dark/20 transition duration-200 ${tilt} group-hover:rotate-0`}
         >
           {product.image_url ? (
             // eslint-disable-next-line @next/next/no-img-element
