@@ -51,11 +51,15 @@ export default function ProductsPage() {
             <a
               key={r.anchor}
               href={`#${r.anchor}`}
-              className={`flex min-w-40 flex-1 flex-col justify-center rounded-xl px-4 py-2.5 text-cream transition hover:opacity-90 ${CATEGORY_PLATES[r.category]}`}
+              className={`relative min-w-40 flex-1 overflow-hidden rounded-xl transition hover:opacity-90 ${CATEGORY_PLATES[r.category]}`}
             >
-              <span className="font-display text-lg leading-tight">{r.label}</span>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-cream/90">
-                {r.blurb}
+              {/* scrim keeps cream text readable over the light gradient ends */}
+              <span className="absolute inset-0 bg-maroon-dark/35" aria-hidden="true" />
+              <span className="relative flex h-full flex-col justify-center px-4 py-2.5 text-cream">
+                <span className="font-display text-lg leading-tight">{r.label}</span>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-cream/95">
+                  {r.blurb}
+                </span>
               </span>
             </a>
           ))}

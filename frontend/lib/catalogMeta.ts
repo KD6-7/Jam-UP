@@ -24,7 +24,7 @@ export const CARD_META: Record<string, ProductMeta> = {
   "mango-ginger-jam": {
     tagline: "Ripe mango brightened with fresh ginger warmth.",
     badge: "Zingy",
-    badgeClass: "bg-marigold text-maroon-dark",
+    badgeClass: "bg-maroon text-cream",
     plate: "bg-gradient-to-br from-mango to-marigold",
     story: [
       "Ginger has sharpened Indian kitchens for centuries — grated into chai, pounded into pastes, sliced into pickles. Here it cuts through sweet mango pulp with a clean, warming zing that makes the fruit taste more like itself.",
@@ -44,7 +44,7 @@ export const CARD_META: Record<string, ProductMeta> = {
   "apple-cinnamon-chia-jam": {
     tagline: "Slow-cooked apple pie feelings, chia boosted.",
     badge: "Chia boost",
-    badgeClass: "bg-marigold text-maroon-dark",
+    badgeClass: "bg-fig text-cream",
     plate: "bg-gradient-to-br from-jamred to-guava",
     story: [
       "Apples and cinnamon have been comforting people for as long as ovens have existed. We slow-cook them into a soft, spiced jam and fold in chia seeds — tiny, nutty pearls that carry fibre, protein and omega-3s into your breakfast without asking for credit.",
@@ -54,7 +54,7 @@ export const CARD_META: Record<string, ProductMeta> = {
   "fig-chia-jam": {
     tagline: "Rich, jammy figs with superfood seeds.",
     badge: "Chia boost",
-    badgeClass: "bg-marigold text-maroon-dark",
+    badgeClass: "bg-fig text-cream",
     plate: "bg-gradient-to-br from-guava to-fig",
     story: [
       "Figs barely need help becoming jam — they're halfway there on the tree. We take dark, honeyed figs, cook them low and slow, and fold in chia seeds for texture and everyday nutrition. The result is deep, sticky and quietly luxurious.",
@@ -64,7 +64,7 @@ export const CARD_META: Record<string, ProductMeta> = {
   "mango-chia-jam": {
     tagline: "The classic mango jam, fortified.",
     badge: "Chia boost",
-    badgeClass: "bg-marigold text-maroon-dark",
+    badgeClass: "bg-fig text-cream",
     plate: "bg-gradient-to-br from-mango to-guava",
     story: [
       "Mango jam is the taste most Indian childhoods share — the jar that emptied faster than any other. Ours keeps that sunshine sweetness, made from real pulp and sulphur-less sugar, and adds chia seeds so the nostalgic choice is also the sensible one.",
