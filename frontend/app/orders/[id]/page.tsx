@@ -30,40 +30,40 @@ export default function OrderPage() {
       )}
       {notFound && (
         <div className="py-16 text-center">
-          <h1 className="font-display text-3xl font-bold">Order not found</h1>
+          <h1 className="font-display text-3xl">Order not found</h1>
         </div>
       )}
       {!error && !notFound && order === null && (
-        <p className="animate-pulse text-maroon/70">Loading your order…</p>
+        <p className="animate-pulse text-maroon/80">Loading your order…</p>
       )}
 
       {order && (
         <>
           {order.status === "paid" ? (
-            <div className="rounded-[20px] bg-marigold/15 p-8 text-center">
+            <div className="rounded-2xl bg-marigold/15 p-8 text-center">
               <div className="text-4xl">🎉</div>
-              <h1 className="mt-2 font-display text-3xl font-black">
+              <h1 className="mt-2 font-display text-3xl">
                 Order confirmed!
               </h1>
-              <p className="mt-2 text-maroon/75">
+              <p className="mt-2 text-maroon/85">
                 Thanks, {order.customer_name.split(" ")[0]} — your jams are on
                 their way to the kitchen.
               </p>
             </div>
           ) : (
-            <div className="rounded-[20px] bg-jamred/10 p-8 text-center">
-              <h1 className="font-display text-3xl font-black">
+            <div className="rounded-2xl bg-jamred/10 p-8 text-center">
+              <h1 className="font-display text-3xl">
                 Payment not completed
               </h1>
-              <p className="mt-2 text-maroon/75">
+              <p className="mt-2 text-maroon/85">
                 This order was created but hasn&apos;t been paid. Your cart is
                 untouched — you can check out again.
               </p>
             </div>
           )}
 
-          <div className="mt-8 rounded-[20px] bg-cream-light p-6">
-            <p className="text-xs uppercase tracking-wider text-maroon/50">
+          <div className="mt-8 rounded-2xl bg-cream-light p-6">
+            <p className="text-xs uppercase tracking-wider text-maroon/75">
               Order {order.id}
             </p>
             <ul className="mt-4 space-y-3">
@@ -82,7 +82,7 @@ export default function OrderPage() {
                     )}
                   </span>
                   <span className="flex-1">
-                    {item.name} <span className="text-maroon/60">× {item.quantity}</span>
+                    {item.name} <span className="text-maroon/75">× {item.quantity}</span>
                   </span>
                   <span className="font-semibold">
                     {formatPaise(item.unit_price_paise * item.quantity)}
@@ -90,11 +90,11 @@ export default function OrderPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-4 flex justify-between border-t border-maroon/15 pt-4 font-display text-lg font-bold">
+            <div className="mt-4 flex justify-between border-t border-maroon/15 pt-4 font-display text-lg">
               <span>Total</span>
               <span>{formatPaise(order.total_paise)}</span>
             </div>
-            <p className="mt-4 text-sm text-maroon/70">
+            <p className="mt-4 text-sm text-maroon/80">
               <span className="font-semibold">Ships to:</span>{" "}
               {order.shipping_address}
             </p>
@@ -103,7 +103,7 @@ export default function OrderPage() {
           <div className="mt-8 text-center">
             <Link
               href="/"
-              className="inline-block rounded-full bg-maroon px-6 py-2.5 text-sm font-bold text-cream transition hover:bg-jamred"
+              className="inline-block min-h-11 rounded-full bg-maroon px-7 py-3 text-sm font-bold text-cream transition hover:bg-maroon-dark"
             >
               Back to the store
             </Link>

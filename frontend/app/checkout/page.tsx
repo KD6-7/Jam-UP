@@ -108,19 +108,19 @@ export default function CheckoutPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-10">
-      <Link href="/cart" className="text-sm font-medium text-jamred hover:underline">
+      <Link href="/cart" className="inline-block py-2 text-sm font-semibold text-maroon hover:text-jamred">
         ← Back to cart
       </Link>
-      <h1 className="mt-2 font-display text-4xl font-black">Checkout</h1>
+      <h1 className="mt-2 font-display text-4xl">Checkout</h1>
 
       {ready && items.length === 0 && (
-        <div className="mt-10 rounded-[20px] border-2 border-dashed border-maroon/35 p-10 text-center">
+        <div className="mt-10 rounded-2xl border-2 border-dashed border-maroon/35 p-10 text-center">
           <p className="font-display text-xl">Your cart is empty.</p>
           <Link
             href="/#fusion"
-            className="mt-5 inline-block rounded-full bg-jamred px-6 py-2.5 text-sm font-bold text-cream transition hover:bg-maroon"
+            className="mt-5 inline-block min-h-11 rounded-full bg-marigold px-7 py-3 text-sm font-bold text-maroon-dark transition hover:bg-maroon hover:text-cream"
           >
-            Browse the jams
+            Browse the shelf
           </Link>
         </div>
       )}
@@ -134,7 +134,7 @@ export default function CheckoutPage() {
                 required
                 value={form.customer_name}
                 onChange={set("customer_name")}
-                className="rounded-xl border border-maroon/25 bg-white px-4 py-2.5 font-normal outline-none focus:border-jamred"
+                className="rounded-xl border border-maroon/25 bg-white px-4 py-2.5 font-normal outline-none focus:border-maroon"
               />
             </label>
             <label className="flex flex-col gap-1 text-sm font-semibold">
@@ -144,7 +144,7 @@ export default function CheckoutPage() {
                 type="email"
                 value={form.customer_email}
                 onChange={set("customer_email")}
-                className="rounded-xl border border-maroon/25 bg-white px-4 py-2.5 font-normal outline-none focus:border-jamred"
+                className="rounded-xl border border-maroon/25 bg-white px-4 py-2.5 font-normal outline-none focus:border-maroon"
               />
             </label>
             <label className="flex flex-col gap-1 text-sm font-semibold">
@@ -155,7 +155,7 @@ export default function CheckoutPage() {
                 minLength={7}
                 value={form.customer_phone}
                 onChange={set("customer_phone")}
-                className="rounded-xl border border-maroon/25 bg-white px-4 py-2.5 font-normal outline-none focus:border-jamred"
+                className="rounded-xl border border-maroon/25 bg-white px-4 py-2.5 font-normal outline-none focus:border-maroon"
               />
             </label>
             <label className="flex flex-col gap-1 text-sm font-semibold">
@@ -166,7 +166,7 @@ export default function CheckoutPage() {
                 rows={4}
                 value={form.shipping_address}
                 onChange={set("shipping_address")}
-                className="rounded-xl border border-maroon/25 bg-white px-4 py-2.5 font-normal outline-none focus:border-jamred"
+                className="rounded-xl border border-maroon/25 bg-white px-4 py-2.5 font-normal outline-none focus:border-maroon"
               />
             </label>
 
@@ -177,23 +177,23 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={busy}
-              className="mt-2 rounded-full bg-jamred px-8 py-3 font-bold text-cream transition hover:bg-maroon disabled:opacity-60"
+              className="mt-2 min-h-12 rounded-full bg-marigold px-8 py-3.5 font-bold text-maroon-dark transition hover:bg-maroon hover:text-cream disabled:opacity-60"
             >
               {busy ? "Opening payment…" : `Pay ${formatPaise(subtotalPaise)}`}
             </button>
-            <p className="text-xs text-maroon/60">
+            <p className="text-xs text-maroon/75">
               Payments are processed by Razorpay. Card details never touch our
               servers.
             </p>
           </form>
 
-          <aside className="h-fit rounded-[20px] bg-cream-light p-6">
-            <h2 className="font-display text-xl font-bold">Order summary</h2>
+          <aside className="h-fit rounded-2xl bg-cream-light p-6">
+            <h2 className="font-display text-xl">Order summary</h2>
             <ul className="mt-4 space-y-3">
               {items.map(({ product, quantity }) => (
                 <li key={product.id} className="flex justify-between gap-3 text-sm">
                   <span>
-                    {product.name} <span className="text-maroon/60">× {quantity}</span>
+                    {product.name} <span className="text-maroon/75">× {quantity}</span>
                   </span>
                   <span className="font-semibold">
                     {formatPaise(product.price_paise * quantity)}
@@ -201,7 +201,7 @@ export default function CheckoutPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-4 flex justify-between border-t border-maroon/15 pt-4 font-display text-lg font-bold">
+            <div className="mt-4 flex justify-between border-t border-maroon/15 pt-4 font-display text-lg">
               <span>Total</span>
               <span>{formatPaise(subtotalPaise)}</span>
             </div>

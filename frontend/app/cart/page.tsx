@@ -12,25 +12,38 @@ export default function CartPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-10">
-      <h1 className="font-display text-4xl font-black">Your cart</h1>
+      <h1 className="font-display text-4xl">Your cart</h1>
 
       {syncError && (
         <p className="mt-4 rounded-lg bg-jamred/10 p-3 text-sm text-jamred">{syncError}</p>
       )}
 
-      {!ready && <p className="mt-8 animate-pulse text-maroon/70">Loading your cart…</p>}
+      {!ready && (
+        <ul className="mt-8 animate-pulse space-y-4">
+          {[0, 1].map((i) => (
+            <li key={i} className="flex items-center gap-4">
+              <div className="h-20 w-20 rounded-xl bg-maroon/10" />
+              <div className="flex-1 space-y-2">
+                <div className="h-5 w-1/2 rounded bg-maroon/10" />
+                <div className="h-4 w-1/3 rounded bg-maroon/10" />
+              </div>
+              <div className="h-11 w-32 rounded-full bg-maroon/10" />
+            </li>
+          ))}
+        </ul>
+      )}
 
       {ready && items.length === 0 && (
-        <div className="mt-10 rounded-[20px] border-2 border-dashed border-maroon/35 p-10 text-center">
+        <div className="mt-10 rounded-2xl border-2 border-dashed border-maroon/35 p-10 text-center">
           <p className="font-display text-xl">Nothing in here yet.</p>
-          <p className="mt-2 text-sm text-maroon/70">
+          <p className="mt-2 text-sm text-maroon/80">
             Your toast deserves better — go pick a jar.
           </p>
           <Link
             href="/#fusion"
-            className="mt-5 inline-block rounded-full bg-jamred px-6 py-2.5 text-sm font-bold text-cream transition hover:bg-maroon"
+            className="mt-5 inline-block min-h-11 rounded-full bg-marigold px-7 py-3 text-sm font-bold text-maroon-dark transition hover:bg-maroon hover:text-cream"
           >
-            Browse the jams
+            Browse the shelf
           </Link>
         </div>
       )}
@@ -39,10 +52,10 @@ export default function CartPage() {
         <>
           <ul className="mt-8 divide-y divide-maroon/10">
             {items.map(({ product, quantity }) => (
-              <li key={product.id} className="flex items-center gap-4 py-4">
+              <li key={product.id} className="flex flex-wrap items-center gap-4 py-5 sm:flex-nowrap">
                 <Link
                   href={`/products/${product.slug}`}
-                  className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-white p-1.5"
+                  className="flex h-20 w-20 shrink-0 -rotate-2 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm"
                 >
                   {product.image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -52,22 +65,22 @@ export default function CartPage() {
                       className="max-h-full max-w-full object-contain"
                     />
                   ) : (
-                    <span className="font-display text-marigold">Jam</span>
+                    <span className="font-display text-marigold">jam</span>
                   )}
                 </Link>
                 <div className="min-w-0 flex-1">
                   <Link
                     href={`/products/${product.slug}`}
-                    className="font-display text-lg font-bold leading-tight hover:text-jamred"
+                    className="font-display text-lg leading-tight hover:text-jamred"
                   >
                     {product.name}
                   </Link>
-                  <p className="text-sm text-maroon/60">
+                  <p className="text-sm text-maroon/75">
                     {formatPaise(product.price_paise)} · {product.weight_grams}g
                   </p>
                   <button
                     onClick={() => setQuantity(product, 0)}
-                    className="mt-1 text-xs font-semibold text-maroon/50 underline hover:text-jamred"
+                    className="mt-1 py-1 text-xs font-semibold text-maroon/75 underline hover:text-jamred"
                   >
                     Remove
                   </button>
@@ -76,7 +89,7 @@ export default function CartPage() {
                   <button
                     aria-label={`Decrease ${product.name} quantity`}
                     onClick={() => setQuantity(product, quantity - 1)}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-maroon/25 font-bold hover:bg-maroon hover:text-cream"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-maroon/25 text-lg font-bold hover:bg-maroon hover:text-cream"
                   >
                     −
                   </button>
@@ -84,29 +97,27 @@ export default function CartPage() {
                   <button
                     aria-label={`Increase ${product.name} quantity`}
                     onClick={() => setQuantity(product, quantity + 1)}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-maroon/25 font-bold hover:bg-maroon hover:text-cream"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-maroon/25 text-lg font-bold hover:bg-maroon hover:text-cream"
                   >
                     +
                   </button>
                 </div>
-                <span className="w-24 text-right font-display text-lg font-bold">
+                <span className="w-24 text-right font-display text-lg">
                   {formatPaise(product.price_paise * quantity)}
                 </span>
               </li>
             ))}
           </ul>
 
-          <div className="mt-6 flex items-center justify-between rounded-[20px] bg-cream-light px-6 py-5">
-            <span className="font-display text-xl font-bold">Subtotal</span>
-            <span className="font-display text-2xl font-black">
-              {formatPaise(subtotalPaise)}
-            </span>
+          <div className="mt-6 flex items-center justify-between rounded-2xl bg-cream-light px-6 py-5">
+            <span className="font-display text-xl">Subtotal</span>
+            <span className="font-display text-2xl">{formatPaise(subtotalPaise)}</span>
           </div>
 
           <div className="mt-5 text-right">
             <Link
               href="/checkout"
-              className="inline-block rounded-full bg-jamred px-8 py-3 font-bold text-cream transition hover:bg-maroon"
+              className="inline-block min-h-12 rounded-full bg-marigold px-9 py-3.5 font-bold text-maroon-dark transition hover:bg-maroon hover:text-cream"
             >
               Checkout
             </Link>
@@ -115,9 +126,9 @@ export default function CartPage() {
       )}
 
       {ready && !user && (
-        <div className="mt-10 rounded-[20px] bg-marigold/15 p-6">
-          <h2 className="font-display text-xl font-bold">Keep this cart</h2>
-          <p className="mt-1 text-sm text-maroon/75">
+        <div className="mt-10 rounded-2xl bg-marigold/15 p-6">
+          <h2 className="font-display text-xl">Keep this cart</h2>
+          <p className="mt-1 text-sm text-maroon/85">
             Sign in with Google and your cart follows you to any device.
           </p>
           <div className="mt-4">

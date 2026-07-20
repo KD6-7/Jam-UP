@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Young_Serif } from "next/font/google";
+import { Hanken_Grotesk, Young_Serif } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 
@@ -10,6 +10,11 @@ const youngSerif = Young_Serif({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-display",
+});
+
+const hanken = Hanken_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-body",
 });
 
 export const metadata: Metadata = {
@@ -24,34 +29,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${youngSerif.variable} scroll-smooth`}>
-      <body className="bg-cream text-maroon-dark antialiased">
+    <html lang="en" className={`${youngSerif.variable} ${hanken.variable} scroll-smooth`}>
+      <body className="bg-cream font-sans text-maroon-dark antialiased">
         <Providers>
           <Header />
           {children}
         </Providers>
 
         <footer className="bg-maroon-dark text-cream">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-6 py-9">
-            <div className="flex items-center gap-3">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/logo.jpg"
-                alt="Jam Up logo"
-                className="h-11 w-11 rounded-full object-cover"
-              />
-              <div>
-                <p className="font-display text-lg">jam up — where every bite is a delight</p>
-                <p className="mt-0.5 text-[13px] text-cream/70">
-                  Made in India · Real fruit pulp · Sulphur-less sugar · Zero artificial additives
-                </p>
-              </div>
+          <div className="mx-auto max-w-6xl px-6 py-12">
+            <p className="font-display text-3xl lowercase tracking-tight md:text-4xl">
+              jam up<span className="text-marigold">.</span>
+            </p>
+            <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
+              <p className="max-w-md text-sm leading-relaxed text-cream/80">
+                Where every bite is a delight. Made in India with real fruit
+                pulp, sulphur-less sugar and zero artificial additives.
+              </p>
+              <nav className="flex gap-6 text-sm font-semibold">
+                <Link href="/#fusion" className="text-cream/90 hover:text-marigold">Fusion</Link>
+                <Link href="/#chia" className="text-cream/90 hover:text-marigold">Chia</Link>
+                <Link href="/#slices" className="text-cream/90 hover:text-marigold">Slices</Link>
+                <Link href="/cart" className="text-cream/90 hover:text-marigold">Cart</Link>
+              </nav>
             </div>
-            <nav className="flex gap-5 text-[13px] font-semibold">
-              <Link href="/#fusion" className="text-cream/85 hover:text-marigold">Fusion</Link>
-              <Link href="/#chia" className="text-cream/85 hover:text-marigold">Chia</Link>
-              <Link href="/#slices" className="text-cream/85 hover:text-marigold">Slices</Link>
-            </nav>
           </div>
         </footer>
       </body>
