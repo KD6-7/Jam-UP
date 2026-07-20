@@ -84,6 +84,7 @@ export const CARD_META: Record<string, ProductMeta> = {
     badge: "Pack of 5",
     badgeClass: "bg-maroon text-cream",
     plate: "bg-gradient-to-br from-jamred to-guava",
+    tile: "/photos/tiles/jam-slice-strawberry.jpg",
     story: [
       "A jam sandwich needs a knife, a jar, a counter and someone to wipe the counter. A Jam Slice needs none of them. Each individually wrapped strawberry square fits a slice of bread exactly — peel the wrapper, place the slice, eat the sandwich.",
       "Built for school tiffins, train journeys and gym bags. 100% natural, no artificial colours, and the first of its kind in India.",
@@ -94,6 +95,7 @@ export const CARD_META: Record<string, ProductMeta> = {
     badge: "Pack of 5",
     badgeClass: "bg-maroon text-cream",
     plate: "bg-gradient-to-br from-mango to-marigold",
+    tile: "/photos/tiles/jam-slice-mango.jpg",
     story: [
       "The mango jam sandwich, freed from the kitchen. Each wrapped square is an even layer of mango jam sized for sliced bread — no jar, no knife, no sticky fingers on the school bus.",
       "Five slices to a pack, 100% natural, no artificial colours. Keep a pack in the tiffin drawer and one in the travel bag; they have a way of vanishing.",
@@ -104,6 +106,7 @@ export const CARD_META: Record<string, ProductMeta> = {
     badge: "Pack of 5",
     badgeClass: "bg-maroon text-cream",
     plate: "bg-gradient-to-br from-fig to-jamred",
+    tile: "/photos/tiles/jam-slice-mixed-fruit.jpg",
     story: [
       "Mixed fruit jam is the crowd-pleaser of Indian breakfasts — everyone's second-favourite flavor and therefore everyone's compromise. Ours turns it into a mess-free square: peel, place between bread, done.",
       "Individually wrapped, five to a pack, 100% natural with no artificial colours. The tiffin solves itself.",
