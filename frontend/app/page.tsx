@@ -112,16 +112,13 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative aspect-[4/3] md:aspect-auto">
+          <div className="flex items-center justify-center px-6 pb-16 md:py-24">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/photos/hero.jpg"
-              alt="A ribbon of red jam dripping from a ceramic spoon into an open jar, surrounded by mango, chillies, guava and fig"
-              className="absolute inset-0 h-full w-full object-cover"
+              src="/logo.jpg"
+              alt="Jam Up — where every bite is a delight"
+              className="h-48 w-48 animate-settle-in rounded-full shadow-2xl shadow-black/40 [--settle-tilt:6deg] [animation-delay:0.3s] md:h-72 md:w-72"
             />
-            {/* blend the photo's edge into the maroon panel */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-maroon-dark to-transparent md:hidden" />
-            <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-28 bg-gradient-to-r from-maroon-dark to-transparent md:block" />
           </div>
         </div>
       </section>
