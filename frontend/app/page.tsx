@@ -155,6 +155,12 @@ export default function Home() {
                       </span>
                     ))}
                   </p>
+                  <Link
+                    href="/products"
+                    className="mt-5 inline-block py-1 text-sm font-semibold text-maroon underline underline-offset-4 hover:text-jamred"
+                  >
+                    Find them in the store →
+                  </Link>
                 </div>
               </div>
             </Reveal>
