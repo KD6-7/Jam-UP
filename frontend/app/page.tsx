@@ -25,6 +25,7 @@ const CHAPTERS: {
   copy: string;
   flavors: string[];
   art: React.ReactNode;
+  image?: { src: string; alt: string };
   flip: boolean;
 }[] = [
   {
@@ -55,6 +56,10 @@ const CHAPTERS: {
         <OrangeSliceArt className="h-24 w-24 animate-float [--float-tilt:-6deg] [animation-delay:0.8s]" />
       </>
     ),
+    image: {
+      src: "/photos/chia-plate.jpg",
+      alt: "Halved figs, apple slices, cinnamon sticks and a spoon of chia-flecked jam on a wooden table",
+    },
     flip: true,
   },
   {
@@ -65,6 +70,10 @@ const CHAPTERS: {
       "Individually wrapped squares of jam that fit sliced bread exactly — peel, place, eat. No jar, no knife, no mess. First of their kind in India, built for school tiffins, train windows and anywhere bread happens.",
     flavors: ["Strawberry", "Mango", "Mixed Fruit"],
     art: <StrawberryArt className="h-32 w-32 animate-float [--float-tilt:-5deg]" />,
+    image: {
+      src: "/photos/slices-plate.jpg",
+      alt: "A square jam slice on white bread with one corner peeled up, strawberries and a lunchbox behind",
+    },
     flip: false,
   },
 ];
@@ -130,11 +139,23 @@ export default function Home() {
                   chapter.flip ? "md:[direction:rtl]" : ""
                 }`}
               >
-                <div
-                  className={`flex min-h-52 items-center justify-center gap-6 rounded-3xl p-10 ${CATEGORY_PLATES[chapter.plateKey]} md:[direction:ltr]`}
-                >
-                  {chapter.art}
-                </div>
+                {chapter.image ? (
+                  <div className="overflow-hidden rounded-3xl md:[direction:ltr]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={chapter.image.src}
+                      alt={chapter.image.alt}
+                      loading="lazy"
+                      className="h-64 w-full object-cover md:h-80"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className={`flex min-h-52 items-center justify-center gap-6 rounded-3xl p-10 ${CATEGORY_PLATES[chapter.plateKey]} md:[direction:ltr]`}
+                  >
+                    {chapter.art}
+                  </div>
+                )}
                 <div className="md:[direction:ltr]">
                   <p className="text-xs font-bold uppercase tracking-[0.16em] text-jamred">
                     {chapter.kicker}
@@ -169,8 +190,17 @@ export default function Home() {
       ))}
 
       {/* Story band */}
-      <section className="mt-4 bg-maroon text-cream">
-        <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
+      <section className="relative mt-4 overflow-hidden bg-maroon-dark text-cream">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/photos/story-kitchen.jpg"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover object-right"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-maroon-dark via-maroon-dark/70 to-transparent" />
+        <div className="relative mx-auto max-w-6xl px-6 py-16 md:py-24">
           <Reveal>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-marigold">
               Our story
@@ -189,7 +219,7 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
-      <Drip className="-mt-px bg-marigold text-maroon" />
+      <Drip className="-mt-px bg-marigold text-maroon-dark" />
 
       {/* The one door to the store */}
       <section className="bg-marigold text-maroon-dark">

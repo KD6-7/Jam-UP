@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import Drip from "@/components/Drip";
-import { ChilliArt, FigArt, MangoArt, StrawberryArt } from "@/components/FruitArt";
+import { ChilliArt, StrawberryArt } from "@/components/FruitArt";
 
 export const metadata: Metadata = {
   title: "Our Story — Jam Up",
@@ -13,19 +13,24 @@ export const metadata: Metadata = {
 export default function StoryPage() {
   return (
     <main>
-      <section className="relative overflow-hidden bg-maroon text-cream">
-        <MangoArt className="absolute right-[10%] top-10 h-24 w-24 animate-float opacity-80 [--float-tilt:-8deg]" />
-        <FigArt className="absolute bottom-16 right-[22%] hidden h-20 w-20 animate-float opacity-80 [--float-tilt:8deg] [animation-delay:1s] md:block" />
-        <div className="mx-auto max-w-6xl px-6 pb-16 pt-14 md:pb-24 md:pt-20">
+      <section className="relative overflow-hidden bg-maroon-dark text-cream">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/photos/story-kitchen.jpg"
+          alt="Hands stirring a copper pot of bubbling jam in a warm Indian home kitchen"
+          className="absolute inset-0 h-full w-full object-cover object-right"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-maroon-dark via-maroon-dark/70 to-transparent" />
+        <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-16 md:pb-32 md:pt-24">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-marigold">
             Our story
           </p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl leading-[1.05] md:text-6xl">
+          <h1 className="mt-4 max-w-2xl font-display text-4xl leading-[1.05] md:text-6xl">
             Wellness in a jar isn&apos;t a slogan. It&apos;s the whole plan.
           </h1>
         </div>
       </section>
-      <Drip className="-mt-px text-maroon" />
+      <Drip className="-mt-px text-maroon-dark" />
 
       <section className="mx-auto max-w-3xl space-y-12 px-6 py-14">
         <div>
