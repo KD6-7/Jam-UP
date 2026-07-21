@@ -1,0 +1,6 @@
+# Optional: real semantic embeddings for the injection firewall.
+# Without these, VibeGuard falls back to a dependency-free bag-of-words
+# similarity that catches near-duplicate injection phrasings.
+sentence-transformers>=2.6,<4
+# Optional vector DB (the guard works in-memory without it).
+# chromadb>=0.5,<0.6

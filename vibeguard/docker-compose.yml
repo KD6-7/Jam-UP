@@ -1,0 +1,26 @@
+services:
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  vibeguard:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      VIBEGUARD_REDIS_URL: redis://redis:6379/0
+      VIBEGUARD_UPSTREAM_URL: ${VIBEGUARD_UPSTREAM_URL:-https://api.openai.com}
+      VIBEGUARD_UPSTREAM_API_KEY: ${VIBEGUARD_UPSTREAM_API_KEY:-}
+      VIBEGUARD_INJECTION_THRESHOLD: ${VIBEGUARD_INJECTION_THRESHOLD:-0.85}
+      # The base image has no ML stack, so use the built-in fallback by default.
+      VIBEGUARD_PREFER_ST_MODEL: "0"
+    depends_on:
+      redis:
+        condition: service_healthy
