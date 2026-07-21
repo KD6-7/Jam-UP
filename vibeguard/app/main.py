@@ -132,6 +132,9 @@ async def chat_completions(request: Request) -> Response:
                                "type": "guardrail", "guard": info.model_dump()}},
         )
 
+    # TTL-bounded record of what was redacted (audit + data minimisation). The
+    # outbound rehydration below uses the in-memory mapping directly; see
+    # token_store module docstring for why the store isn't read back here.
     await state.token_store.save(prepared.session_id, prepared.mapping)
     stream = bool(payload.get("stream"))
     headers = _forward_headers(request)

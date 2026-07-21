@@ -30,10 +30,10 @@ stored map → transparent client delivery.
 | Feature | Module | Notes |
 |---|---|---|
 | Reverse proxy (`/v1/chat/completions`) | [`app/main.py`](app/main.py) | `httpx` async forwarding, streaming + non-streaming |
-| Deterministic PII masking | [`app/masking.py`](app/masking.py) | email, API key, SSN, credit card, phone, IPv4 |
+| Deterministic PII masking | [`app/masking.py`](app/masking.py) | email, API key, SSN, credit card, phone, IPv4; masks string **and** structured/multimodal `text` parts |
 | Aho-Corasick blocklist matcher | [`app/aho_corasick.py`](app/aho_corasick.py) | O(n+m) multi-pattern entity matching |
-| Stateful token map (TTL) | [`app/token_store.py`](app/token_store.py) | Redis-backed, **in-memory fallback** |
-| Semantic injection firewall | [`app/semantic.py`](app/semantic.py) | cosine similarity vs. seeded attacks |
+| Stateful token map (TTL) | [`app/token_store.py`](app/token_store.py) | Redis-backed, **in-memory fallback**; TTL'd audit record (see module docstring for read-back scope) |
+| Semantic injection firewall | [`app/semantic.py`](app/semantic.py) | per-piece cosine similarity vs. seeded attacks; screens `user`/`tool`/`function` content, trusts the `system` prompt |
 | Streaming rehydration | [`app/stream.py`](app/stream.py) | boundary-safe across chunk splits |
 | Token-bucket rate limiting | [`app/rate_limit.py`](app/rate_limit.py) | opt-in per-client quota guard |
 

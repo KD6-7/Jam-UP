@@ -5,6 +5,14 @@ a short TTL (data minimisation). Backed by Redis when a URL is configured and
 ``redis`` is importable; otherwise an in-memory dict with lazy expiry so the
 proxy still runs on a machine with no Redis.
 
+Scope note: in the current single-request proxy flow, one request handles
+mask -> forward -> rehydrate, so the outbound pass rehydrates from the mapping
+already held in memory and does **not** read this store back. The store is
+therefore used for (a) TTL-bounded auditability of what was redacted and
+(b) enabling a future *separate* demask endpoint or multi-process deployment
+where inbound and outbound happen in different requests. ``load()`` exists for
+that path (and is covered by tests) even though the hot path doesn't call it.
+
 Both implementations expose the same async interface.
 """
 

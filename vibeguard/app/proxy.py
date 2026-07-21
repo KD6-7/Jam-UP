@@ -1,19 +1,29 @@
 """Inbound/outbound orchestration that ties the pieces together.
 
-Inbound:  mask PII in every message -> store the mapping under a session id ->
-          score the original user text for prompt injection.
-Outbound: rehydrate ``[REDACTED_*]`` tokens using the stored mapping (whole
-          body for non-streaming; boundary-safe for streaming).
+Inbound:  mask PII in every message (string *and* structured/multimodal text
+          parts) -> store the mapping under a session id -> score every
+          attacker-controllable text piece for prompt injection.
+Outbound: rehydrate ``[REDACTED_*]`` tokens using the mapping (whole body for
+          non-streaming; boundary-safe for streaming).
 """
 
 from __future__ import annotations
 
+import copy
 import uuid
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
 from .masking import Masker, rehydrate_text
 from .semantic import InjectionGuard
+
+# Roles whose content is attacker-controllable and therefore worth screening
+# for prompt injection. The app's own ``system`` prompt is trusted and excluded
+# so a legitimately instruction-heavy system message isn't self-blocked.
+GUARDED_ROLES = frozenset({"user", "tool", "function"})
+
+# (message_index, part_index_or_None, text)
+_TextSlot = Tuple[int, Optional[int], str]
 
 
 class InjectionBlocked(Exception):
@@ -34,23 +44,53 @@ class PreparedRequest:
     matched_seed: str
 
 
-def _extract_message_texts(messages: List[Dict[str, Any]]) -> List[Tuple[int, str]]:
-    """Return (index, text) for messages whose content is a plain string."""
-    out: List[Tuple[int, str]] = []
-    for i, msg in enumerate(messages):
+def _message_text_pieces(msg: Dict[str, Any]) -> List[str]:
+    """Every plain-string text carried by a message (top-level or structured)."""
+    content = msg.get("content")
+    if isinstance(content, str):
+        return [content] if content else []
+    pieces: List[str] = []
+    if isinstance(content, list):
+        for part in content:
+            if isinstance(part, dict) and isinstance(part.get("text"), str) and part["text"]:
+                pieces.append(part["text"])
+    return pieces
+
+
+def _collect_text_slots(messages: List[Dict[str, Any]]) -> List[_TextSlot]:
+    """Locate every maskable text, whether string content or a structured part."""
+    slots: List[_TextSlot] = []
+    for mi, msg in enumerate(messages):
         content = msg.get("content")
-        if isinstance(content, str) and content:
-            out.append((i, content))
-    return out
+        if isinstance(content, str):
+            if content:
+                slots.append((mi, None, content))
+        elif isinstance(content, list):
+            for pi, part in enumerate(content):
+                if isinstance(part, dict) and isinstance(part.get("text"), str) and part["text"]:
+                    slots.append((mi, pi, part["text"]))
+    return slots
 
 
-def _user_text(messages: List[Dict[str, Any]]) -> str:
-    parts = [
-        msg.get("content", "")
-        for msg in messages
-        if msg.get("role") == "user" and isinstance(msg.get("content"), str)
-    ]
-    return "\n".join(parts)
+def _screen_for_injection(messages: List[Dict[str, Any]], guard: InjectionGuard) -> Tuple[float, str]:
+    """Score each guarded text piece independently; raise on the first hit.
+
+    Scoring per-piece (rather than one concatenated blob) keeps the signal
+    sharp — a short injection buried in a long transcript would otherwise be
+    diluted below the cosine threshold.
+    """
+    best_score = 0.0
+    best_seed = ""
+    for msg in messages:
+        if msg.get("role") not in GUARDED_ROLES:
+            continue
+        for piece in _message_text_pieces(msg):
+            score, seed = guard.score(piece)
+            if score > best_score:
+                best_score, best_seed = score, seed
+            if score >= guard.threshold:
+                raise InjectionBlocked(score, seed, guard.threshold, guard.backend)
+    return best_score, best_seed
 
 
 def prepare_request(
@@ -61,23 +101,23 @@ def prepare_request(
     """Mask PII and run the injection check. Raises ``InjectionBlocked``."""
     messages: List[Dict[str, Any]] = payload.get("messages", []) or []
 
-    # Injection check runs on the original (pre-masking) user text.
+    # Injection check on the original (pre-masking) attacker-controllable text.
     injection_score = 0.0
     matched_seed = ""
     if guard is not None:
-        injection_score, matched_seed = guard.score(_user_text(messages))
-        if injection_score >= guard.threshold:
-            raise InjectionBlocked(
-                injection_score, matched_seed, guard.threshold, guard.backend
-            )
+        injection_score, matched_seed = _screen_for_injection(messages, guard)
 
-    indexed = _extract_message_texts(messages)
-    masked_texts, mapping = masker.mask_batch([text for _, text in indexed])
+    # Deep-copy so structured (nested) content can be rewritten without touching
+    # the caller's payload.
+    new_messages = copy.deepcopy(messages)
+    slots = _collect_text_slots(new_messages)
+    masked_texts, mapping = masker.mask_batch([text for _, _, text in slots])
+    for (mi, pi, _original), masked in zip(slots, masked_texts):
+        if pi is None:
+            new_messages[mi]["content"] = masked
+        else:
+            new_messages[mi]["content"][pi]["text"] = masked
 
-    # Rebuild the payload with masked message content.
-    new_messages = [dict(m) for m in messages]
-    for (idx, _original), masked in zip(indexed, masked_texts):
-        new_messages[idx]["content"] = masked
     new_payload = dict(payload)
     new_payload["messages"] = new_messages
 
