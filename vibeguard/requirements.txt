@@ -1,0 +1,7 @@
+# Core proxy runtime (Python 3.9+).
+fastapi>=0.110,<0.116
+uvicorn[standard]>=0.27,<0.31
+httpx>=0.27,<0.28
+pydantic>=2.6,<3
+# Optional but recommended for the stateful token store.
+redis>=5.0,<6
